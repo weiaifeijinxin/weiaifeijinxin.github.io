@@ -21,14 +21,71 @@
     <main>
         <section id="home">
             <h2>写信</h2>
-            <div class="letter-form">
-                <textarea 
-                    id="letterContent" 
-                    placeholder="写下想对未来说的话..."
-                    rows="10"
-                ></textarea>
-                <button id="apiButton" class="api-button">保存信件</button>
-                <div id="apiResult" class="result-area"></div>
+            <div class="letter-container">
+                <div class="letter-form">
+                    <div class="letter-header">
+                        <div class="date">写信日期：<span id="currentDate"></span></div>
+                        <div class="letter-meta">
+                            <div class="meta-item">
+                                <label for="receiveDate">收信日期：</label>
+                                <input 
+                                    type="date" 
+                                    id="receiveDate" 
+                                    min="" 
+                                    class="date-input"
+                                >
+                            </div>
+                            <div class="meta-item">
+                                <label for="receiverEmail">收信邮箱：</label>
+                                <input 
+                                    type="email" 
+                                    id="receiverEmail" 
+                                    placeholder="请输入邮箱地址"
+                                    class="email-input"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <textarea 
+                        id="letterContent" 
+                        placeholder="亲爱的未来...&#10;&#10;写下此刻想说的话，让时光带去未来..."
+                        rows="12"
+                    ></textarea>
+                    <div class="letter-footer">
+                        <button id="apiButton" class="api-button">
+                            <span class="button-text">封存信件</span>
+                            <span class="button-icon">✉</span>
+                        </button>
+                    </div>
+                    <div id="apiResult" class="result-area"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="about-container">
+                <h2>关于时间胶囊</h2>
+                <div class="about-content">
+                    <div class="about-card">
+                        <h3>什么是时间胶囊？</h3>
+                        <p>时间胶囊是一个神奇的数字空间，它能将您此刻的思绪、情感和期望安全地保存，直到未来的某一天。就像写给未来的一封信，当时光流转，您将收到来自过去的自己的问候。</p>
+                    </div>
+                    
+                    <div class="about-card">
+                        <h3>如何使用？</h3>
+                        <ol>
+                            <li>在写信页面写下您想对未来说的话</li>
+                            <li>选择一个未来的日期</li>
+                            <li>点击"封存信件"将信件保存</li>
+                            <li>等待时间流逝，在指定日期收到信件</li>
+                        </ol>
+                    </div>
+
+                    <div class="about-card">
+                        <h3>我们的承诺</h3>
+                        <p>您的每一字每一句都将被安全加密保存，只有未来的您才能读到这份独特的时光记忆。让我们一起，把此刻的心情珍藏，让未来的自己感受时光的温度。</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -37,6 +94,7 @@
         <p>&copy; 2024 我的网页. 保留所有权利。</p>
     </footer>
 
+    <script src="js/config.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html> 
