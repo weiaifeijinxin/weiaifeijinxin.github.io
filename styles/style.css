@@ -281,3 +281,172 @@ textarea:focus {
 .email-input::placeholder {
     color: #999;
 } 
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    /* 头部样式调整 */
+    header {
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.8em;
+        padding: 0 10px;
+    }
+
+    nav ul {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    nav ul li {
+        margin: 0;
+    }
+
+    /* 信件容器调整 */
+    .letter-container {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .letter-form {
+        padding: 20px 15px;
+    }
+
+    /* 元数据区域调整 */
+    .letter-meta {
+        margin: 15px 0;
+        padding: 15px;
+    }
+
+    .meta-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .meta-item label {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    .date-input,
+    .email-input {
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* 文本区域调整 */
+    textarea {
+        min-height: 300px;
+        padding: 0 15px 15px 40px;
+        font-size: 15px;
+    }
+
+    /* 按钮样式调整 */
+    .api-button {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    .letter-footer {
+        margin-top: 30px;
+    }
+
+    /* 结果区域调整 */
+    .result-area {
+        margin-top: 20px;
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    /* 关于页面调整 */
+    .about-section {
+        padding: 20px 0;
+    }
+
+    .about-container {
+        padding: 0 15px;
+    }
+
+    .about-section h2 {
+        font-size: 1.8em;
+        margin-bottom: 30px;
+    }
+
+    .about-content {
+        gap: 20px;
+    }
+
+    .about-card {
+        padding: 20px;
+    }
+
+    .about-card h3 {
+        font-size: 1.3em;
+    }
+
+    /* 页脚调整 */
+    footer {
+        position: relative;
+        margin-top: 40px;
+    }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    .letter-form {
+        padding: 15px 10px;
+    }
+
+    .letter-form::after {
+        left: 20px;
+    }
+
+    textarea {
+        padding-left: 30px;
+        font-size: 14px;
+    }
+
+    .about-card h3 {
+        font-size: 1.2em;
+    }
+}
+
+/* 确保在所有设备上的基础样式优化 */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+/* 优化移动端输入体验 */
+input, textarea {
+    -webkit-appearance: none;
+    border-radius: 4px;
+}
+
+/* 添加平滑滚动 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 优化移动端点击区域 */
+button, 
+input[type="submit"],
+input[type="button"] {
+    min-height: 44px; /* 确保足够的点击区域 */
+}
+
+/* 优化移动端选择体验 */
+input[type="date"] {
+    min-height: 44px;
+    max-height: 44px;
+    line-height: 44px;
+} 
