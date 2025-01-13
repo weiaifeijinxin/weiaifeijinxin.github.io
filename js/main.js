@@ -34,12 +34,26 @@ document.addEventListener('DOMContentLoaded', function() {
         this.parentElement.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
     });
 
-    // 添加Bmob的配置
-    const BMOB_CONFIG = {
-        APPLICATION_ID: 'Your Application ID',  // 替换为您的Application ID
-        REST_API_KEY: 'Your REST API Key',      // 替换为您的REST API Key
-        API_BASE_URL: 'https://自己备案域名'    // 替换为您的域名
+    // 添加API配置
+    const API_CONFIG = {
+        URL: 'http://timepill.api.northcity.top/1/classes/XinList',
+        HEADERS: {
+            'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+            'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
+            'Content-Type': 'application/json'
+        }
     };
+
+    // 格式化日期时间
+    function formatDateTime(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
 
     // 按钮点击事件
     apiButton.addEventListener('click', async function() {
@@ -68,32 +82,28 @@ document.addEventListener('DOMContentLoaded', function() {
             apiResult.textContent = '正在将您的信件封存到时间胶囊中...';
             apiResult.style.color = '#666';
 
-            // 使用Bmob API保存数据
-            const response = await fetch(`${BMOB_CONFIG.API_BASE_URL}/1/classes/TimeCapsule`, {
+            // 准备请求数据
+            const requestData = {
+                xinContent: letterContent.value,
+                xinSendToEmail: receiverEmail.value,
+                xinYesOrNoShow: 'NO',
+                xinSendTime: receiveDateInput.value,
+                xinCreateTime: formatDateTime(new Date())
+            };
+
+            const response = await fetch(API_CONFIG.URL, {
                 method: 'POST',
-                headers: {
-                    'X-Bmob-Application-Id': BMOB_CONFIG.APPLICATION_ID,
-                    'X-Bmob-REST-API-Key': BMOB_CONFIG.REST_API_KEY,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    content: letterContent.value,
-                    receiveDate: receiveDateInput.value,
-                    receiverEmail: receiverEmail.value,
-                    sendDate: new Date().toISOString(),
-                    status: 'pending',  // 添加状态字段，用于标记是否已发送
-                    isRead: false       // 添加阅读状态字段
-                })
+                headers: API_CONFIG.HEADERS,
+                body: JSON.stringify(requestData)
             });
             
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || '信件封存失败');
-            }
-
             const data = await response.json();
             
-            // 格式化日期显示
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            // 格式化显示日期
             const formattedDate = new Date(receiveDateInput.value).toLocaleDateString('zh-CN', {
                 year: 'numeric',
                 month: 'long',
