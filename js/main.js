@@ -87,22 +87,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 准备请求数据
             const requestData = {
-                xinContent: letterContent.value,
-                xinSendToEmail: receiverEmail.value,
-                xinYesOrNoShow: "NO",
-                xinSendTime: receiveDateInput.value,
-                xinCreateTime: formatDateTime(new Date())
+                "xinContent": String(letterContent.value),
+                "xinSendToEmail": String(receiverEmail.value),
+                "xinYesOrNoShow": "NO",
+                "xinSendTime": String(receiveDateInput.value),
+                "xinCreateTime": formatDateTime(new Date())
             };
 
-            console.log('Sending request with data:', requestData); // 调试日志
+            // 在发送请求前打印完整的请求数据
+            console.log('Request data:', JSON.stringify(requestData));
 
             try {
                 const response = await fetch(API_CONFIG.URL, {
                     method: 'POST',
                     headers: API_CONFIG.HEADERS,
                     body: JSON.stringify(requestData),
-                    mode: 'cors', // 明确指定跨域模式
-                    credentials: 'omit' // 不发送cookies
+                    mode: 'cors',
+                    credentials: 'omit'
                 });
 
                 console.log('Response status:', response.status); // 调试日志
