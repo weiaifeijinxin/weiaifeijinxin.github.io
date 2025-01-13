@@ -40,7 +40,10 @@ document.addEventListener('DOMContentLoaded', function() {
         HEADERS: {
             'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
             'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 添加CORS相关头部
+            'Access-Control-Allow-Origin': '*'
         }
     };
 
@@ -86,42 +89,59 @@ document.addEventListener('DOMContentLoaded', function() {
             const requestData = {
                 xinContent: letterContent.value,
                 xinSendToEmail: receiverEmail.value,
-                xinYesOrNoShow: 'NO',
+                xinYesOrNoShow: "NO",
                 xinSendTime: receiveDateInput.value,
                 xinCreateTime: formatDateTime(new Date())
             };
 
-            const response = await fetch(API_CONFIG.URL, {
-                method: 'POST',
-                headers: API_CONFIG.HEADERS,
-                body: JSON.stringify(requestData)
-            });
-            
-            const data = await response.json();
-            
-            if (data.error) {
-                throw new Error(data.error);
+            console.log('Sending request with data:', requestData); // 调试日志
+
+            try {
+                const response = await fetch(API_CONFIG.URL, {
+                    method: 'POST',
+                    headers: API_CONFIG.HEADERS,
+                    body: JSON.stringify(requestData),
+                    mode: 'cors', // 明确指定跨域模式
+                    credentials: 'omit' // 不发送cookies
+                });
+
+                console.log('Response status:', response.status); // 调试日志
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Response data:', data); // 调试日志
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // 格式化显示日期
+                const formattedDate = new Date(receiveDateInput.value).toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                apiResult.textContent = `您的信件已经成功封存，将在 ${formattedDate} 发送至您的邮箱`;
+                apiResult.style.color = '#27ae60';
+                
+                // 清空表单
+                letterContent.value = '';
+                receiveDateInput.value = '';
+                receiverEmail.value = '';
+
+            } catch (fetchError) {
+                console.error('Fetch error:', fetchError); // 调试日志
+                throw new Error(`请求失败: ${fetchError.message}`);
             }
 
-            // 格式化显示日期
-            const formattedDate = new Date(receiveDateInput.value).toLocaleDateString('zh-CN', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            
-            apiResult.textContent = `您的信件已经成功封存，将在 ${formattedDate} 发送至您的邮箱`;
-            apiResult.style.color = '#27ae60';
-            
-            // 清空表单
-            letterContent.value = '';
-            receiveDateInput.value = '';
-            receiverEmail.value = '';
-
         } catch (error) {
-            apiResult.textContent = '发生错误：' + error.message;
+            console.error('Error details:', error); // 调试日志
+            apiResult.textContent = '发生错误：' + (error.message || '网络请求失败，请稍后重试');
             apiResult.style.color = '#e74c3c';
-            console.error('API调用错误：', error);
         } finally {
             apiButton.disabled = false;
             apiButton.innerHTML = '<span class="button-text">封存信件</span><span class="button-icon">✉</span>';
