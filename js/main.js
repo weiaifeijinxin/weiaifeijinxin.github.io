@@ -41,9 +41,9 @@ document.addEventListener('DOMContentLoaded', function() {
             'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
             'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            // 添加CORS相关头部
-            'Access-Control-Allow-Origin': '*'
+            // 移除可能导致问题的头部
+            // 'Accept': 'application/json',
+            // 'Access-Control-Allow-Origin': '*'
         }
     };
 
@@ -102,8 +102,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'POST',
                     headers: API_CONFIG.HEADERS,
                     body: JSON.stringify(requestData),
-                    mode: 'cors',
-                    credentials: 'omit'
+                    // 移除这些配置，让浏览器自动处理
+                    // mode: 'cors',
+                    // credentials: 'omit'
                 });
 
                 console.log('Response status:', response.status); // 调试日志
@@ -135,7 +136,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 receiverEmail.value = '';
 
             } catch (fetchError) {
-                console.error('Fetch error:', fetchError); // 调试日志
+                console.error('Fetch error details:', {
+                    message: fetchError.message,
+                    stack: fetchError.stack,
+                    cause: fetchError.cause
+                });
                 throw new Error(`请求失败: ${fetchError.message}`);
             }
 
