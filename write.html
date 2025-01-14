@@ -2,12 +2,10 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>时间胶囊 - 写信</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>写信 - 时间胶囊</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/write.css">
 </head>
 <body>
     <div class="back-button" onclick="window.location.href='index.html'">
@@ -16,28 +14,25 @@
     </div>
 
     <main>
-        <section id="home">
-            <h2>写信</h2>
-            <div class="letter-container">
-                <div class="letter-form">
-                    <div class="letter-header">
-                        <div class="date">写信日期：<span id="currentDate"></span></div>
-                    </div>
-                    <textarea 
-                        id="letterContent" 
-                        placeholder="亲爱的未来...&#10;&#10;写下此刻想说的话，让时光带去未来..."
-                        rows="12"
-                    ></textarea>
-                    <div class="letter-footer">
-                        <button id="apiButton" class="api-button">
-                            <span class="button-text">封存信件</span>
-                            <span class="button-icon">✉</span>
-                        </button>
-                    </div>
-                    <div id="apiResult" class="result-area"></div>
+        <div class="letter-container">
+            <div class="letter-form">
+                <div class="letter-header">
+                    <div class="date">写信日期：<span id="currentDate"></span></div>
                 </div>
+                <textarea 
+                    id="letterContent" 
+                    placeholder="亲爱的未来...&#10;&#10;写下此刻想说的话，让时光带去未来..."
+                    rows="12"
+                ></textarea>
+                <div class="letter-footer">
+                    <button id="apiButton" class="api-button">
+                        <span class="button-text">封存信件</span>
+                        <span class="button-icon">✉</span>
+                    </button>
+                </div>
+                <div id="apiResult" class="result-area"></div>
             </div>
-        </section>
+        </div>
 
         <!-- 发送设置弹窗 -->
         <div id="sendModal" class="modal">
@@ -90,6 +85,6 @@
         </div>
     </main>
 
-    <script src="js/main.js"></script>
+    <script src="js/write.js"></script>
 </body>
 </html> 

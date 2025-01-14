@@ -1,741 +1,19 @@
-/* 导入Google字体 */
-@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap');
-
-body {
-    font-family: 'Noto Serif SC', serif;
-    line-height: 1.8;
-    background-color: #f5f5f5;
-    color: #333;
-}
-
-header {
-    background-color: #2c3e50;
-    padding: 1.5rem;
-}
-
-header h1 {
-    font-family: 'Ma Shan Zheng', cursive;
-    font-size: 2.5em;
-    margin-bottom: 0.5em;
-}
-
-.letter-container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-.letter-form {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    position: relative;
-    background-image: linear-gradient(#e5e5e5 1px, transparent 1px);
-    background-size: 100% 32px;
-    background-position: 0 100px;
-}
-
-/* 添加左边的竖线 */
-.letter-form::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 30px;
-    height: 100%;
-    width: 1px;
-    background-color: #ff9999;
-    opacity: 0.5;
-}
-
-.letter-header {
-    margin-bottom: 30px;
-    color: #666;
-    font-family: 'Ma Shan Zheng', cursive;
-    font-size: 1.2em;
-    background-color: #fff;
-    position: relative;
-    z-index: 1;
-    padding-bottom: 10px;
-}
-
-.date {
-    text-align: right;
-    margin-bottom: 20px;
-    padding-right: 20px;
-}
-
-textarea {
-    width: 100%;
-    min-height: 500px;
-    padding: 0 20px 20px 50px; /* 增加左边距，为竖线留出空间 */
-    border: none;
-    background: transparent;
-    font-family: 'Noto Serif SC', serif;
-    font-size: 16px;
-    line-height: 32px; /* 设置行高与背景线条间距相同 */
-    color: #2c3e50;
-    resize: vertical;
-    margin-top: 20px;
-}
-
-textarea:focus {
-    outline: none;
-}
-
-.letter-footer {
-    text-align: center;
-    margin-top: 40px;
-    background-color: #fff;
-    position: relative;
-    z-index: 1;
-    padding-top: 20px;
-}
-
-.api-button {
-    background-color: #2c3e50;
-    color: white;
-    padding: 15px 40px;
-    font-size: 18px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Ma Shan Zheng', cursive;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.api-button:hover {
-    background-color: #34495e;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
-}
-
-.button-icon {
-    font-size: 20px;
-}
-
-.result-area {
-    margin-top: 30px;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: #fff;
-    text-align: center;
-    font-size: 0.9em;
-    color: #666;
-    position: relative;
-    z-index: 1;
-}
-
-/* 响应式设计调整 */
-@media (max-width: 768px) {
-    .letter-form {
-        padding: 20px;
-    }
-    
-    textarea {
-        min-height: 300px;
-    }
-} 
-
-/* 关于页面样式 */
-.about-section {
-    display: none;
-    padding: 40px 0;
-}
-
-.about-section:target {
-    display: block;
-}
-
-#home:target ~ #about {
-    display: none;
-}
-
-.about-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.about-section h2 {
-    text-align: center;
-    font-family: 'Ma Shan Zheng', cursive;
-    font-size: 2.2em;
-    color: #2c3e50;
-    margin-bottom: 40px;
-}
-
-.about-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 30px;
-}
-
-.about-card {
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.about-card:hover {
-    transform: translateY(-5px);
-}
-
-.about-card h3 {
-    font-family: 'Ma Shan Zheng', cursive;
-    color: #2c3e50;
-    font-size: 1.5em;
-    margin-bottom: 20px;
-    position: relative;
-}
-
-.about-card h3::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    width: 50px;
-    height: 3px;
-    background: linear-gradient(to right, #2c3e50, #3498db);
-    border-radius: 2px;
-}
-
-.about-card p {
-    color: #666;
-    line-height: 1.8;
-    margin-bottom: 15px;
-}
-
-.about-card ol {
-    color: #666;
-    padding-left: 20px;
-    line-height: 1.8;
-}
-
-.about-card ol li {
-    margin-bottom: 10px;
-}
-
-/* 响应式调整 */
-@media (max-width: 768px) {
-    .about-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .about-card {
-        padding: 20px;
-    }
-} 
-
-.letter-meta {
-    margin: 20px 0;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    position: relative;
-    z-index: 1;
-}
-
-.meta-item {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-}
-
-.meta-item:last-child {
-    margin-bottom: 0;
-}
-
-.meta-item label {
-    font-family: 'Ma Shan Zheng', cursive;
-    color: #2c3e50;
-    margin-right: 15px;
-    min-width: 85px;
-}
-
-.date-input,
-.email-input {
-    flex: 1;
-    padding: 8px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-family: 'Noto Serif SC', serif;
-    font-size: 14px;
-    color: #2c3e50;
-    transition: all 0.3s ease;
-}
-
-.date-input:focus,
-.email-input:focus {
-    outline: none;
-    border-color: #2c3e50;
-    box-shadow: 0 0 5px rgba(44, 62, 80, 0.2);
-}
-
-.email-input::placeholder {
-    color: #999;
-} 
-
-/* 移动端适配 */
-@media (max-width: 768px) {
-    /* 头部样式调整 */
-    header {
-        padding: 1rem;
-    }
-
-    header h1 {
-        font-size: 1.8em;
-        padding: 0 10px;
-    }
-
-    nav ul {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 15px;
-    }
-
-    nav ul li {
-        margin: 0;
-    }
-
-    /* 信件容器调整 */
-    .letter-container {
-        margin: 20px auto;
-        padding: 0 15px;
-    }
-
-    .letter-form {
-        padding: 20px 15px;
-    }
-
-    /* 元数据区域调整 */
-    .letter-meta {
-        margin: 15px 0;
-        padding: 15px;
-    }
-
-    .meta-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-
-    .meta-item label {
-        margin-right: 0;
-        margin-bottom: 5px;
-    }
-
-    .date-input,
-    .email-input {
-        width: 100%;
-        padding: 10px;
-    }
-
-    /* 文本区域调整 */
-    textarea {
-        min-height: 300px;
-        padding: 0 15px 15px 40px;
-        font-size: 15px;
-    }
-
-    /* 按钮样式调整 */
-    .api-button {
-        width: 100%;
-        padding: 12px 20px;
-        font-size: 16px;
-    }
-
-    .letter-footer {
-        margin-top: 30px;
-    }
-
-    /* 结果区域调整 */
-    .result-area {
-        margin-top: 20px;
-        padding: 12px;
-        font-size: 14px;
-    }
-
-    /* 关于页面调整 */
-    .about-section {
-        padding: 20px 0;
-    }
-
-    .about-container {
-        padding: 0 15px;
-    }
-
-    .about-section h2 {
-        font-size: 1.8em;
-        margin-bottom: 30px;
-    }
-
-    .about-content {
-        gap: 20px;
-    }
-
-    .about-card {
-        padding: 20px;
-    }
-
-    .about-card h3 {
-        font-size: 1.3em;
-    }
-
-    /* 页脚调整 */
-    footer {
-        position: relative;
-        margin-top: 40px;
-    }
-}
-
-/* 超小屏幕适配 */
-@media (max-width: 480px) {
-    header h1 {
-        font-size: 1.5em;
-    }
-
-    .letter-form {
-        padding: 15px 10px;
-    }
-
-    .letter-form::after {
-        left: 20px;
-    }
-
-    textarea {
-        padding-left: 30px;
-        font-size: 14px;
-    }
-
-    .about-card h3 {
-        font-size: 1.2em;
-    }
-}
-
-/* 确保在所有设备上的基础样式优化 */
-* {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-}
-
-/* 优化移动端输入体验 */
-input, textarea {
-    -webkit-appearance: none;
-    border-radius: 4px;
-}
-
-/* 添加平滑滚动 */
-html {
-    scroll-behavior: smooth;
-}
-
-/* 优化移动端点击区域 */
-button, 
-input[type="submit"],
-input[type="button"] {
-    min-height: 44px; /* 确保足够的点击区域 */
-}
-
-/* 优化移动端选择体验 */
-input[type="date"] {
-    min-height: 44px;
-    max-height: 44px;
-    line-height: 44px;
-} 
-
-/* 模态框样式 */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(5px);
-}
-
-.modal.show {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-}
-
-.modal-content {
-    background: #fff;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    transform: translateY(-50px);
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.modal.show .modal-content {
-    transform: translateY(0);
-}
-
-.modal-header {
-    padding: 20px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.modal-header h3 {
-    margin: 0;
-    font-family: 'Ma Shan Zheng', cursive;
-    color: #2c3e50;
-}
-
-.close-button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #666;
-}
-
-.modal-body {
-    padding: 20px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-family: 'Ma Shan Zheng', cursive;
-    color: #2c3e50;
-}
-
-.modal-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-.modal-input:focus {
-    outline: none;
-    border-color: #2c3e50;
-}
-
-/* 开关样式 */
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-}
-
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.toggle-label {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 24px;
-}
-
-.toggle-label:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-}
-
-input:checked + .toggle-label {
-    background-color: #2c3e50;
-}
-
-input:checked + .toggle-label:before {
-    transform: translateX(26px);
-}
-
-.hint {
-    margin-left: 10px;
-    font-size: 14px;
-    color: #666;
-}
-
-.modal-footer {
-    padding: 20px;
-    border-top: 1px solid #eee;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.modal-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: 'Ma Shan Zheng', cursive;
-    transition: all 0.3s ease;
-}
-
-.modal-button.cancel {
-    background-color: #eee;
-    color: #666;
-}
-
-.modal-button.confirm {
-    background-color: #2c3e50;
-    color: white;
-}
-
-.modal-button:hover {
-    transform: translateY(-2px);
-}
-
-/* 添加页面切换动画 */
-.letter-container {
-    transition: opacity 0.3s ease;
-}
-
-.letter-container.fade-out {
-    opacity: 0;
-}
-
-/* 添加模态框打开时的背景动画 */
-.letter-container.blur {
-    filter: blur(5px);
-    transition: filter 0.3s ease;
-} 
-
-/* 成功弹窗样式 */
-.success-modal .modal-content {
-    text-align: center;
-    padding: 30px;
-    max-width: 400px;
-}
-
-.success-icon {
-    font-size: 48px;
-    color: #27ae60;
-    margin-bottom: 20px;
-    animation: scaleIn 0.5s ease;
-}
-
-@keyframes scaleIn {
-    0% { transform: scale(0); }
-    70% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-.success-content h3 {
-    font-family: 'Ma Shan Zheng', cursive;
-    color: #2c3e50;
-    margin-bottom: 15px;
-}
-
-.success-content p {
-    color: #666;
-    line-height: 1.6;
-} 
-
-/* 计数器样式 */
-.counter-container {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-bottom: 15px;
-    font-family: 'Ma Shan Zheng', cursive;
-}
-
-.counter-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.counter-label {
-    color: #666;
-}
-
-.counter-number {
-    color: #2c3e50;
-    font-weight: bold;
-    min-width: 40px;
-    text-align: left;
-}
-
-/* 数字变化动画 */
-@keyframes countUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.counter-number.animate {
-    animation: countUp 0.5s ease-out;
-} 
-
-/* 添加与首页相同的导航样式 */
-.top-nav {
-    padding: 20px;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.nav-links a {
-    color: var(--text-color);
-    text-decoration: none;
-    margin: 0 30px;
-    padding: 8px 25px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    font-size: 18px;
-}
-
-.nav-links a.active {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-/* 确保变量一致性 */
 :root {
     --background-color: #FFF5EE;
     --primary-color: #D88C7E;
     --accent-color: #95C5B0;
     --text-color: #2D4356;
-} 
+}
 
-/* 添加返回按钮样式 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    font-family: 'Noto Serif SC', serif;
+    min-height: 100vh;
+}
+
+/* 返回按钮样式 */
 .back-button {
     position: fixed;
     top: 20px;
@@ -762,12 +40,85 @@ input:checked + .toggle-label:before {
     font-size: 20px;
 }
 
-/* 调整写信页面的上边距，为返回按钮留出空间 */
-#home {
-    padding-top: 40px;
+/* 页面通用样式 */
+.page-title {
+    font-size: 32px;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 40px;
+    font-family: 'Noto Serif SC', serif;
 }
 
-/* 移动端适配 */
+/* 关于页面样式 */
+.about-section {
+    padding: 60px 0;
+}
+
+.about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.about-content {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.story-section,
+.team-section,
+.contact-section {
+    margin-bottom: 40px;
+}
+
+.about-content h3 {
+    font-size: 24px;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    font-family: 'Noto Serif SC', serif;
+}
+
+.about-content p {
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.team-section ul {
+    list-style: none;
+    padding-left: 20px;
+    margin: 15px 0;
+}
+
+.team-section li {
+    margin-bottom: 12px;
+    position: relative;
+    color: #666;
+}
+
+.team-section li:before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    position: absolute;
+    left: -20px;
+}
+
+.contact-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.contact-info p {
+    margin: 10px 0;
+    color: #666;
+}
+
+/* 响应式调整 */
 @media (max-width: 768px) {
     .back-button {
         top: 10px;
@@ -778,5 +129,153 @@ input:checked + .toggle-label:before {
 
     .back-icon {
         font-size: 16px;
+    }
+
+    .about-content {
+        padding: 20px;
+    }
+    
+    .page-title {
+        font-size: 28px;
+        margin-top: 60px;
+    }
+    
+    .about-content h3 {
+        font-size: 20px;
+    }
+} 
+
+/* 时间胶囊页面样式 */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.feature-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card.highlight {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #fff5f5, #fff);
+    border: 2px solid var(--primary-color);
+}
+
+.feature-icon {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    color: var(--text-color);
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.promotion-tag {
+    margin-top: 15px;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* 引用和故事部分 */
+.quote-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.quote-main {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.quote-main h3 {
+    font-size: 28px;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.quote-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.quote-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.story-section {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+}
+
+.story-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.reflection {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.reflection p {
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.ending-section {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.nostalgic-text {
+    margin-top: 30px;
+    font-style: italic;
+    color: var(--primary-color);
+}
+
+.nostalgic-text p {
+    margin: 8px 0;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quote-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-card {
+        padding: 20px;
+    }
+
+    .quote-main h3 {
+        font-size: 24px;
     }
 } 

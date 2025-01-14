@@ -1,3 +1,7 @@
+// 在文件开头添加
+let visitCount = 0;
+let letterCount = 0;
+
 // 等待文档加载完成
 document.addEventListener('DOMContentLoaded', function() {
     console.log('网页已加载完成');
@@ -110,12 +114,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 记录访问次数
     async function recordVisit() {
         try {
-            const response = await fetch('https://api.codenow.cn/1/classes/Statistics', {
+            const response = await fetch('http://timepill.api.northcity.top/1/classes/XinList', {
                 method: 'POST',
                 headers: {
                     'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
                     'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     type: 'visit',
@@ -377,6 +381,49 @@ document.addEventListener('DOMContentLoaded', function() {
                 apiResult.textContent = '';
             }, 300);
         }
+    });
+
+    // 获取统计数据
+    async function fetchStats() {
+        try {
+            const response = await fetch('http://timepill.api.northcity.top/1/classes/Statistics', {
+                headers: {
+                    'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+                    'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch statistics');
+            }
+
+            const data = await response.json();
+            
+            // 更新显示
+            visitCount = data.results.filter(item => item.type === 'visit').length;
+            letterCount = data.results.filter(item => item.type === 'letter').length;
+            
+            updateStatDisplay('visitCount', visitCount);
+            updateStatDisplay('letterCount', letterCount);
+        } catch (error) {
+            console.error('Error fetching statistics:', error);
+        }
+    }
+
+    // 更新统计显示
+    function updateStatDisplay(elementId, value) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.textContent = value.toLocaleString();
+            element.classList.remove('animate');
+            void element.offsetWidth; // 触发重排
+            element.classList.add('animate');
+        }
+    }
+
+    // 页面加载时获取统计数据
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchStats();
     });
 });
 
