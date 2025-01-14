@@ -111,10 +111,43 @@ document.addEventListener('DOMContentLoaded', function() {
     const visitCount = document.getElementById('visitCount');
     const letterCount = document.getElementById('letterCount');
 
-    // 记录访问次数
+    // 获取统计数据
+    async function getStats() {
+        try {
+            const response = await fetch('https://api.codenow.cn/1/classes/Statistics', {
+                method: 'GET',
+                headers: {
+                    'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+                    'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('获取统计失败');
+            }
+
+            const data = await response.json();
+            
+            // 更新显示
+            const visitCount = document.getElementById('visitCount');
+            const letterCount = document.getElementById('letterCount');
+            
+            if (visitCount) {
+                visitCount.textContent = data.results.filter(item => item.type === 'visit').length;
+            }
+            if (letterCount) {
+                letterCount.textContent = data.results.filter(item => item.type === 'letter').length;
+            }
+
+        } catch (error) {
+            console.error('获取统计数据失败:', error);
+        }
+    }
+
+    // 记录访问
     async function recordVisit() {
         try {
-            const response = await fetch('http://timepill.api.northcity.top/1/classes/XinList', {
+            const response = await fetch('https://api.codenow.cn/1/classes/Statistics', {
                 method: 'POST',
                 headers: {
                     'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
@@ -123,82 +156,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify({
                     type: 'visit',
-                    timestamp: formatDateTime(new Date())
+                    timestamp: new Date().toISOString()
                 })
             });
 
             if (!response.ok) {
-                throw new Error('Failed to record visit');
+                throw new Error('记录访问失败');
             }
+
+            // 记录成功后获取最新统计
+            await getStats();
         } catch (error) {
-            console.error('Error recording visit:', error);
+            console.error('记录访问失败:', error);
         }
     }
 
-    // 获取统计数据
-    async function fetchStatistics() {
-        try {
-            const response = await fetch('https://api.codenow.cn/1/classes/Statistics', {
-                headers: {
-                    'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
-                    'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91'
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch statistics');
-            }
-
-            const data = await response.json();
-            
-            // 更新显示
-            const visits = data.results.filter(item => item.type === 'visit').length;
-            const letters = data.results.filter(item => item.type === 'letter').length;
-            
-            updateCounter(visitCount, visits);
-            updateCounter(letterCount, letters);
-        } catch (error) {
-            console.error('Error fetching statistics:', error);
-        }
-    }
-
-    // 更新计数器显示
-    function updateCounter(element, value) {
-        element.textContent = value.toLocaleString();
-        element.classList.remove('animate');
-        void element.offsetWidth; // 触发重排
-        element.classList.add('animate');
-    }
-
-    // 记录成功发送的信件
-    async function recordLetter() {
-        try {
-            const response = await fetch('https://api.codenow.cn/1/classes/Statistics', {
-                method: 'POST',
-                headers: {
-                    'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
-                    'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    type: 'letter',
-                    timestamp: formatDateTime(new Date())
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to record letter');
-            }
-
-            // 更新统计数据显示
-            fetchStatistics();
-        } catch (error) {
-            console.error('Error recording letter:', error);
-        }
-    }
-
-    // 初始化：记录访问并获取统计数据
-    recordVisit().then(() => fetchStatistics());
+    // 页面加载时记录访问并获取统计
+    document.addEventListener('DOMContentLoaded', function() {
+        recordVisit();
+    });
 
     // 修改请求部分
     apiButton.addEventListener('click', function() {
