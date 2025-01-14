@@ -93,44 +93,63 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 修改请求部分
-    apiButton.addEventListener('click', async function () {
+    apiButton.addEventListener('click', function() {
+        // 首先验证信件内容
+        if (!letterContent.value.trim()) {
+            apiResult.textContent = '请先写下您想对未来说的话...';
+            apiResult.style.color = '#e74c3c';
+            return;
+        }
+
+        // 显示模态框
+        modal.classList.add('show');
+        setTimeout(() => {
+            modal.querySelector('.modal-content').style.transform = 'translateY(0)';
+            modal.querySelector('.modal-content').style.opacity = '1';
+        }, 10);
+    });
+
+    // 关闭模态框
+    function closeModal() {
+        modal.querySelector('.modal-content').style.transform = 'translateY(-20px)';
+        modal.querySelector('.modal-content').style.opacity = '0';
+        setTimeout(() => {
+            modal.classList.remove('show');
+        }, 300);
+    }
+
+    closeButton.addEventListener('click', closeModal);
+    cancelButton.addEventListener('click', closeModal);
+
+    // 确认发送
+    confirmButton.addEventListener('click', async function() {
+        // 验证表单
+        if (!receiverEmail.value || !isValidEmail(receiverEmail.value)) {
+            alert('请输入有效的邮箱地址');
+            return;
+        }
+
+        if (!receiveDateInput.value) {
+            alert('请选择收信日期');
+            return;
+        }
+
+        // 准备请求数据
+        const requestData = {
+            xinContent: letterContent.value,
+            xinSendToEmail: receiverEmail.value,
+            xinYesOrNoShow: isPublicCheckbox.checked ? 'YES' : 'NO',
+            xinSendTime: receiveDateInput.value,
+            xinCreateTime: formatDateTime(new Date())
+        };
+
         try {
-            // 校验必填项
-            if (!letterContent.value.trim()) {
-                apiResult.textContent = '请先写下您想对未来说的话...';
-                apiResult.style.color = '#e74c3c';
-                return;
-            }
-    
-            if (!receiveDateInput.value) {
-                apiResult.textContent = '请选择收信日期';
-                apiResult.style.color = '#e74c3c';
-                return;
-            }
-    
-            if (!receiverEmail.value || !isValidEmail(receiverEmail.value)) {
-                apiResult.textContent = '请输入有效的邮箱地址';
-                apiResult.style.color = '#e74c3c';
-                return;
-            }
-    
-            // 显示封存状态
-            apiButton.disabled = true;
-            apiButton.innerHTML = '<span class="button-text">正在封存</span><span class="button-icon">📨</span>';
-            apiResult.textContent = '正在将您的信件封存到时间胶囊中...';
-            apiResult.style.color = '#666';
-    
-            // 准备请求数据
-            const requestData = {
-                xinContent: letterContent.value,
-                xinSendToEmail: receiverEmail.value,
-                xinYesOrNoShow: 'NO',
-                xinSendTime: receiveDateInput.value,
-                xinCreateTime: formatDateTime(new Date())
-            };
-    
-            // 发起请求
-            const response = await fetch('http://timepill.api.northcity.top/1/classes/XinList', {
+            // 显示发送状态
+            confirmButton.disabled = true;
+            confirmButton.textContent = '发送中...';
+
+            // 发送请求
+            const response = await fetch('https://api.codenow.cn/1/classes/XinList', {
                 method: 'POST',
                 headers: {
                     'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
@@ -139,39 +158,51 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify(requestData),
             });
-    
-            // 检查响应状态
+
             if (!response.ok) {
                 throw new Error(`服务器错误：${response.statusText}`);
             }
-    
-            // 解析响应
-            const result = await response.json();
-            console.log('Response:', result);
-    
-            // 显示成功消息
-            const formattedDate = new Date(receiveDateInput.value).toLocaleDateString('zh-CN', {
+
+            // 发送成功
+            closeModal();
+            apiResult.textContent = `您的信件已经成功封存，将在 ${new Date(receiveDateInput.value).toLocaleDateString('zh-CN', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
-            });
-            apiResult.textContent = `您的信件已经成功封存，将在 ${formattedDate} 发送至您的邮箱`;
+            })} 发送至您的邮箱`;
             apiResult.style.color = '#27ae60';
-    
+
             // 清空表单
             letterContent.value = '';
             receiveDateInput.value = '';
             receiverEmail.value = '';
+            isPublicCheckbox.checked = false;
+
         } catch (error) {
-            console.error('Error:', error);
-            apiResult.textContent = '发生错误：' + error.message;
-            apiResult.style.color = '#e74c3c';
+            alert('发送失败：' + error.message);
         } finally {
-            // 恢复按钮状态
-            apiButton.disabled = false;
-            apiButton.innerHTML = '<span class="button-text">封存信件</span><span class="button-icon">✉</span>';
+            confirmButton.disabled = false;
+            confirmButton.textContent = '确认发送';
         }
     });
+
+    // 点击模态框外部关闭
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    function checkNetworkError(error) {
+        if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+            return '网络连接失败，请检查您的网络连接';
+        }
+        if (error.message.includes('NetworkError')) {
+            return '网络错误，可能是跨域问题';
+        }
+        return error.message;
+    }
+    
     
     
 });

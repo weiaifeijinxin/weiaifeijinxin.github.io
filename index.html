@@ -91,6 +91,46 @@
                 </div>
             </div>
         </section>
+
+        <div id="sendModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>发送设置</h3>
+                    <button class="close-button">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="receiverEmail">收信邮箱：</label>
+                        <input 
+                            type="email" 
+                            id="receiverEmail" 
+                            placeholder="请输入邮箱地址"
+                            class="modal-input"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="receiveDate">收信日期：</label>
+                        <input 
+                            type="date" 
+                            id="receiveDate" 
+                            class="modal-input"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="isPublic">是否公开：</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="isPublic">
+                            <label for="isPublic" class="toggle-label"></label>
+                        </div>
+                        <span class="hint">公开的信件将会在「信件墙」展示</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-button cancel">返回修改</button>
+                    <button class="modal-button confirm">确认发送</button>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer>
