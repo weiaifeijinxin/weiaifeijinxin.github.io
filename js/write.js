@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 打开模态框
     function openModal() {
         modal.style.display = 'flex';
+        modal.classList.add('show');
         setTimeout(() => {
             modal.style.opacity = '1';
             modal.querySelector('.modal-content').style.transform = 'translateY(0)';
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 关闭模态框
     function closeModal() {
         modal.style.opacity = '0';
+        modal.classList.remove('show');
         modal.querySelector('.modal-content').style.transform = 'translateY(-50px)';
         setTimeout(() => {
             modal.style.display = 'none';
@@ -74,11 +76,36 @@ document.addEventListener('DOMContentLoaded', function() {
     function showSuccessModal(message) {
         successMessage.textContent = message;
         successModal.style.display = 'flex';
+        successModal.classList.add('show');
         setTimeout(() => {
             successModal.style.opacity = '1';
             successModal.querySelector('.modal-content').style.transform = 'translateY(0)';
+            
+            // 3秒后自动关闭
+            setTimeout(() => {
+                closeSuccessModal();
+            }, 3000);
         }, 10);
         document.querySelector('.letter-container').classList.add('blur');
+    }
+
+    // 添加关闭成功弹窗的函数
+    function closeSuccessModal() {
+        successModal.style.opacity = '0';
+        successModal.classList.remove('show');
+        successModal.querySelector('.modal-content').style.transform = 'translateY(-50px)';
+        
+        setTimeout(() => {
+            successModal.style.display = 'none';
+            document.querySelector('.letter-container').classList.remove('blur');
+            
+            // 重置所有表单
+            letterContent.value = '';
+            receiveDateInput.value = '';
+            receiverEmail.value = '';
+            isPublicCheckbox.checked = false;
+            apiResult.textContent = '';
+        }, 300);
     }
 
     // 添加文本框焦点效果
@@ -145,6 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     }
 
+    // 确认发送按钮点击事件
     confirmButton.addEventListener('click', async function() {
         const email = receiverEmail.value;
         const receiveDate = receiveDateInput.value;
@@ -168,49 +196,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 headers: API_CONFIG.HEADERS,
                 body: JSON.stringify({
-                    content: letterContent.value,
-                    email: email,
-                    receiveDate: receiveDate,
-                    isPublic: isPublicCheckbox.checked,
-                    sendDate: formatDateTime(new Date()),
-                    type: 'letter'
+                    xinContent: letterContent.value,
+                    xinSendToEmail: email,
+                    xinYesOrNoShow: isPublicCheckbox.checked ? 'YES' : 'NO',
+                    xinSendTime: receiveDate,
+                    xinCreateTime: formatDateTime(new Date())
                 })
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || '发送失败');
-            }
-
-            // 添加错误处理和重试机制
-            const retryCount = 3;
-            let retryAttempt = 0;
-            
-            while (retryAttempt < retryCount) {
-                try {
-                    await fetch(API_CONFIG.URL, {
-                        method: 'POST',
-                        headers: API_CONFIG.HEADERS,
-                        body: JSON.stringify({
-                            type: 'letter_count',
-                            timestamp: formatDateTime(new Date())
-                        })
-                    });
-                    break;
-                } catch (error) {
-                    retryAttempt++;
-                    if (retryAttempt === retryCount) {
-                        console.error('统计记录失败：', error);
-                    }
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
+                throw new Error('发送失败');
             }
 
             closeModal();
             showSuccessModal(`信件已成功封存，将在 ${receiveDate} 发送至邮箱：${email}`);
 
         } catch (error) {
-            alert('发送失败：' + checkNetworkError(error));
+            alert('发送失败：' + error.message);
         } finally {
             confirmButton.disabled = false;
             confirmButton.textContent = '确认发送';

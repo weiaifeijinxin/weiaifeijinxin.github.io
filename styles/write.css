@@ -23,8 +23,8 @@ body {
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
-    background-color: var(--primary-color);
-    color: white;
+    background-color: #FFD699 !important;
+    color: #333 !important;
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -33,7 +33,7 @@ body {
 
 .back-button:hover {
     transform: translateX(-5px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(255, 214, 153, 0.4);
 }
 
 .back-icon {
@@ -113,8 +113,8 @@ textarea:focus {
 }
 
 .api-button {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: #FFD699 !important;
+    color: #333 !important;
     padding: 15px 40px;
     border: none;
     border-radius: 25px;
@@ -128,10 +128,10 @@ textarea:focus {
 
 .api-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(216, 140, 126, 0.4);
+    box-shadow: 0 5px 15px rgba(255, 214, 153, 0.4);
 }
 
-/* 弹窗样式 */
+/* 弹窗样式优化 */
 .modal {
     display: none;
     position: fixed;
@@ -139,107 +139,216 @@ textarea:focus {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
     z-index: 1000;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.modal.show {
-    display: flex;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    /* 弹窗居中样式 */
     align-items: center;
     justify-content: center;
+}
+
+/* 显示弹窗时的样式 */
+.modal.show {
+    display: flex !important; /* 确保能覆盖其他 display 声明 */
     opacity: 1;
 }
 
 .modal-content {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.98);
+    padding: 20px;
     border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
+    width: 75%;
+    max-width: 280px;
     position: relative;
-    transform: translateY(0);
+    transform: translateY(-20px);
     transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    /* 优化布局 */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
 }
 
 .modal-header h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
     margin: 0;
-    color: var(--text-color);
 }
 
 .close-button {
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 20px;
+    color: #999;
     cursor: pointer;
-    color: #666;
+    padding: 5px;
+    transition: all 0.3s ease;
+    line-height: 1;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 8px;
+    font-size: 13px;
     color: #666;
+    font-weight: 500;
 }
 
 .modal-input {
-    width: 100%;
-    padding: 10px;
+    padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.modal-input:focus {
+    outline: none;
+    border-color: #FFD699;
+    box-shadow: 0 0 0 2px rgba(255, 214, 153, 0.2);
 }
 
 .modal-footer {
     display: flex;
     justify-content: flex-end;
-    gap: 15px;
-    margin-top: 30px;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    margin-top: auto;
 }
 
 .modal-button {
-    padding: 10px 25px;
+    padding: 6px 16px;
     border: none;
-    border-radius: 20px;
+    border-radius: 6px;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .modal-button.cancel {
-    background-color: #f8f9fa;
+    background-color: #f5f5f5;
     color: #666;
 }
 
-.modal-button.confirm {
-    background-color: var(--primary-color);
-    color: white;
+.modal-button.cancel:hover {
+    background-color: #eee;
 }
 
-/* 成功弹窗样式 */
+.modal-button.confirm {
+    background-color: #FFD699 !important;
+    color: #333 !important;
+}
+
+.modal-button.confirm:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(255, 214, 153, 0.3);
+}
+
+/* 成功弹窗样式优化 */
 .success-modal .modal-content {
     text-align: center;
-    padding: 40px;
+    padding: 25px;
+    max-width: 260px;
 }
 
 .success-icon {
-    font-size: 48px;
-    color: var(--accent-color);
-    margin-bottom: 20px;
+    font-size: 32px;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.success-modal h3 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.success-modal p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* 开关按钮样式优化 */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.toggle-label:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-label {
+    background-color: #FFD699;
+}
+
+input:checked + .toggle-label:before {
+    transform: translateX(20px);
+}
+
+/* 提示文本样式 */
+.hint {
+    font-size: 12px;
+    color: #999;
+    margin-left: 8px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        padding: 20px;
+    }
+    
+    .modal-button {
+        padding: 8px 15px;
+    }
 }
 
 /* 响应式调整 */

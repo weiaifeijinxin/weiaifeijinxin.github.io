@@ -1,6 +1,6 @@
 :root {
     --background-color: #FFF5EE;
-    --primary-color: #D88C7E;
+    --primary-color: #FFD699;
     --accent-color: #95C5B0;
     --text-color: #2D4356;
     --content-width: min(90%, 1200px);
@@ -340,4 +340,16 @@ html {
         padding: 8px 15px;
         font-size: 14px;
     }
+} 
+
+/* 全局按钮样式 */
+button, .main-button, .api-button, .modal-button.confirm {
+    background-color: var(--primary-color);
+    color: #333; /* 黑色文字 */
+    transition: all 0.3s ease;
+}
+
+button:hover, .main-button:hover, .api-button:hover, .modal-button.confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 214, 153, 0.4);
 } 

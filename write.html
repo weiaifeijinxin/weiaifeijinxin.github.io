@@ -34,39 +34,28 @@
             </div>
         </div>
 
-        <!-- 发送设置弹窗 -->
+        <!-- 发送弹窗 -->
         <div id="sendModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>发送设置</h3>
+                    <h3>确认发送信息</h3>
                     <button class="close-button">&times;</button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="receiverEmail">收信邮箱：</label>
-                        <input 
-                            type="email" 
-                            id="receiverEmail" 
-                            placeholder="请输入邮箱地址"
-                            class="modal-input"
-                        >
+                <div class="form-group">
+                    <label for="receiverEmail">收件人邮箱：</label>
+                    <input type="email" id="receiverEmail" class="modal-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="receiveDate">收信日期：</label>
+                    <input type="date" id="receiveDate" class="modal-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="isPublic">是否公开：</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="isPublic">
+                        <label for="isPublic" class="toggle-label"></label>
                     </div>
-                    <div class="form-group">
-                        <label for="receiveDate">收信日期：</label>
-                        <input 
-                            type="date" 
-                            id="receiveDate" 
-                            class="modal-input"
-                        >
-                    </div>
-                    <div class="form-group">
-                        <label for="isPublic">是否公开：</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="isPublic">
-                            <label for="isPublic" class="toggle-label"></label>
-                        </div>
-                        <span class="hint">公开的信件将会在「信件墙」展示</span>
-                    </div>
+                    <span class="hint">公开的信件将会在「信件墙」展示</span>
                 </div>
                 <div class="modal-footer">
                     <button class="modal-button cancel">返回修改</button>
@@ -77,7 +66,7 @@
 
         <!-- 成功提示弹窗 -->
         <div id="successModal" class="modal success-modal">
-            <div class="modal-content success-content">
+            <div class="modal-content">
                 <div class="success-icon">✓</div>
                 <h3>发送成功</h3>
                 <p id="successMessage"></p>
