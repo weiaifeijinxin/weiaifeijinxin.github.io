@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Proxy</title>
+</head>
+<body>
+    <script>
+        window.addEventListener('message', async function(event) {
+            try {
+                const response = await fetch(event.data.url, {
+                    method: 'POST',
+                    headers: event.data.headers,
+                    body: event.data.body
+                });
+                const data = await response.json();
+                event.source.postMessage({
+                    success: true,
+                    data: data
+                }, event.origin);
+            } catch (error) {
+                event.source.postMessage({
+                    success: false,
+                    error: error.message
+                }, event.origin);
+            }
+        });
+    </script>
+</body>
+</html> 

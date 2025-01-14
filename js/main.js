@@ -40,10 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         HEADERS: {
             'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
             'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
-            'Content-Type': 'application/json',
-            // 移除可能导致问题的头部
-            // 'Accept': 'application/json',
-            // 'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'application/json'
         }
     };
 
@@ -58,99 +55,133 @@ document.addEventListener('DOMContentLoaded', function() {
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
 
-    // 按钮点击事件
-    apiButton.addEventListener('click', async function() {
+    // 创建代理 iframe
+    const proxyFrame = document.createElement('iframe');
+    proxyFrame.style.display = 'none';
+    proxyFrame.src = 'proxy.html';
+    document.body.appendChild(proxyFrame);
+
+    // 添加 JSONP 函数
+    function jsonp(url, data) {
+        return new Promise((resolve, reject) => {
+            const callbackName = 'jsonp_' + Date.now();
+            const script = document.createElement('script');
+            
+            // 创建查询字符串
+            const queryString = Object.entries(data)
+                .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+                .join('&');
+
+            // 设置全局回调
+            window[callbackName] = function(response) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                resolve(response);
+            };
+
+            // 添加错误处理
+            script.onerror = () => {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                reject(new Error('JSONP 请求失败'));
+            };
+
+            // 构建完整的URL
+            script.src = `${url}?callback=${callbackName}&${queryString}`;
+            document.body.appendChild(script);
+        });
+    }
+
+    // 修改请求部分
+    apiButton.addEventListener('click', async function () {
         try {
-            // 验证所有必填项
+            // 校验必填项
             if (!letterContent.value.trim()) {
                 apiResult.textContent = '请先写下您想对未来说的话...';
                 apiResult.style.color = '#e74c3c';
                 return;
             }
-
+    
             if (!receiveDateInput.value) {
                 apiResult.textContent = '请选择收信日期';
                 apiResult.style.color = '#e74c3c';
                 return;
             }
-
+    
             if (!receiverEmail.value || !isValidEmail(receiverEmail.value)) {
                 apiResult.textContent = '请输入有效的邮箱地址';
                 apiResult.style.color = '#e74c3c';
                 return;
             }
-
+    
+            // 显示封存状态
             apiButton.disabled = true;
             apiButton.innerHTML = '<span class="button-text">正在封存</span><span class="button-icon">📨</span>';
             apiResult.textContent = '正在将您的信件封存到时间胶囊中...';
             apiResult.style.color = '#666';
-
+    
             // 准备请求数据
             const requestData = {
-                "xinContent": String(letterContent.value),
-                "xinSendToEmail": String(receiverEmail.value),
-                "xinYesOrNoShow": "NO",
-                "xinSendTime": String(receiveDateInput.value),
-                "xinCreateTime": formatDateTime(new Date())
+                xinContent: letterContent.value,
+                xinSendToEmail: receiverEmail.value,
+                xinYesOrNoShow: 'NO',
+                xinSendTime: receiveDateInput.value,
+                xinCreateTime: formatDateTime(new Date())
             };
-
-            // 在发送请求前打印完整的请求数据
-            console.log('Request data:', JSON.stringify(requestData));
-
-            try {
-                const response = await fetch(API_CONFIG.URL, {
-                    method: 'POST',
-                    headers: API_CONFIG.HEADERS,
-                    body: JSON.stringify(requestData),
-                    // 移除这些配置，让浏览器自动处理
-                    // mode: 'cors',
-                    // credentials: 'omit'
-                });
-
-                console.log('Response status:', response.status); // 调试日志
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log('Response data:', data); // 调试日志
-
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-
-                // 格式化显示日期
-                const formattedDate = new Date(receiveDateInput.value).toLocaleDateString('zh-CN', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                
-                apiResult.textContent = `您的信件已经成功封存，将在 ${formattedDate} 发送至您的邮箱`;
-                apiResult.style.color = '#27ae60';
-                
-                // 清空表单
-                letterContent.value = '';
-                receiveDateInput.value = '';
-                receiverEmail.value = '';
-
-            } catch (fetchError) {
-                console.error('Fetch error details:', {
-                    message: fetchError.message,
-                    stack: fetchError.stack,
-                    cause: fetchError.cause
-                });
-                throw new Error(`请求失败: ${fetchError.message}`);
+    
+            // 发起请求
+            const response = await fetch('http://timepill.api.northcity.top/1/classes/XinList', {
+                method: 'POST',
+                headers: {
+                    'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+                    'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            });
+    
+            // 检查响应状态
+            if (!response.ok) {
+                throw new Error(`服务器错误：${response.statusText}`);
             }
-
+    
+            // 解析响应
+            const result = await response.json();
+            console.log('Response:', result);
+    
+            // 显示成功消息
+            const formattedDate = new Date(receiveDateInput.value).toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            apiResult.textContent = `您的信件已经成功封存，将在 ${formattedDate} 发送至您的邮箱`;
+            apiResult.style.color = '#27ae60';
+    
+            // 清空表单
+            letterContent.value = '';
+            receiveDateInput.value = '';
+            receiverEmail.value = '';
         } catch (error) {
-            console.error('Error details:', error); // 调试日志
-            apiResult.textContent = '发生错误：' + (error.message || '网络请求失败，请稍后重试');
+            console.error('Error:', error);
+            apiResult.textContent = '发生错误：' + error.message;
             apiResult.style.color = '#e74c3c';
         } finally {
+            // 恢复按钮状态
             apiButton.disabled = false;
             apiButton.innerHTML = '<span class="button-text">封存信件</span><span class="button-icon">✉</span>';
         }
     });
-}); 
+    
+    
+});
+
+function checkNetworkError(error) {
+    if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+        return '网络连接失败，请检查您的网络连接';
+    }
+    if (error.message.includes('NetworkError')) {
+        return '网络错误，可能是跨域问题';
+    }
+    return error.message;
+} 
