@@ -33,7 +33,7 @@ header h1 {
     position: relative;
     background-image: linear-gradient(#e5e5e5 1px, transparent 1px);
     background-size: 100% 32px;
-    background-position: 0 180px;
+    background-position: 0 100px;
 }
 
 /* 添加左边的竖线 */
@@ -67,7 +67,7 @@ header h1 {
 
 textarea {
     width: 100%;
-    min-height: 400px;
+    min-height: 500px;
     padding: 0 20px 20px 50px; /* 增加左边距，为竖线留出空间 */
     border: none;
     background: transparent;
@@ -76,7 +76,7 @@ textarea {
     line-height: 32px; /* 设置行高与背景线条间距相同 */
     color: #2c3e50;
     resize: vertical;
-    margin-top: 0; /* 移除之前的负边距 */
+    margin-top: 20px;
 }
 
 textarea:focus {
@@ -463,6 +463,7 @@ input[type="date"] {
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
 .modal.show {
@@ -477,14 +478,14 @@ input[type="date"] {
     border-radius: 12px;
     width: 90%;
     max-width: 500px;
-    transform: translateY(-20px);
+    transform: translateY(-50px);
     opacity: 0;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .modal.show .modal-content {
     transform: translateY(0);
-    opacity: 1;
 }
 
 .modal-header {
@@ -628,4 +629,154 @@ input:checked + .toggle-label:before {
 
 .letter-container.fade-out {
     opacity: 0;
+}
+
+/* 添加模态框打开时的背景动画 */
+.letter-container.blur {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+} 
+
+/* 成功弹窗样式 */
+.success-modal .modal-content {
+    text-align: center;
+    padding: 30px;
+    max-width: 400px;
+}
+
+.success-icon {
+    font-size: 48px;
+    color: #27ae60;
+    margin-bottom: 20px;
+    animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.success-content h3 {
+    font-family: 'Ma Shan Zheng', cursive;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.success-content p {
+    color: #666;
+    line-height: 1.6;
+} 
+
+/* 计数器样式 */
+.counter-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 15px;
+    font-family: 'Ma Shan Zheng', cursive;
+}
+
+.counter-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.counter-label {
+    color: #666;
+}
+
+.counter-number {
+    color: #2c3e50;
+    font-weight: bold;
+    min-width: 40px;
+    text-align: left;
+}
+
+/* 数字变化动画 */
+@keyframes countUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.counter-number.animate {
+    animation: countUp 0.5s ease-out;
+} 
+
+/* 添加与首页相同的导航样式 */
+.top-nav {
+    padding: 20px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 0 30px;
+    padding: 8px 25px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    font-size: 18px;
+}
+
+.nav-links a.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* 确保变量一致性 */
+:root {
+    --background-color: #FFF5EE;
+    --primary-color: #D88C7E;
+    --accent-color: #95C5B0;
+    --text-color: #2D4356;
+} 
+
+/* 添加返回按钮样式 */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    font-family: 'Noto Serif SC', serif;
+}
+
+.back-button:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.back-icon {
+    font-size: 20px;
+}
+
+/* 调整写信页面的上边距，为返回按钮留出空间 */
+#home {
+    padding-top: 40px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .back-button {
+        top: 10px;
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    .back-icon {
+        font-size: 16px;
+    }
 } 

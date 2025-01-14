@@ -2,141 +2,46 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>时间胶囊 - 寄往未来的信</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/home.css">
 </head>
 <body>
-    <header>
-        <h1>时间胶囊 - 寄往未来的信</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">写信</a></li>
-                <li><a href="#about">关于</a></li>
-                <li><a href="#contact">联系我们</a></li>
-            </ul>
-        </nav>
-    </header>
+    <nav class="top-nav">
+        <div class="nav-links">
+            <a href="/write" class="active">写信</a>
+            <a href="/capsule">时间胶囊</a>
+            <a href="/about">关于</a>
+        </div>
+    </nav>
 
-    <main>
-        <section id="home">
-            <h2>写信</h2>
-            <div class="letter-container">
-                <div class="letter-form">
-                    <div class="letter-header">
-                        <div class="date">写信日期：<span id="currentDate"></span></div>
-                        <div class="letter-meta">
-                            <div class="meta-item">
-                                <label for="receiveDate">收信日期：</label>
-                                <input 
-                                    type="date" 
-                                    id="receiveDate" 
-                                    min="" 
-                                    class="date-input"
-                                >
-                            </div>
-                            <div class="meta-item">
-                                <label for="receiverEmail">收信邮箱：</label>
-                                <input 
-                                    type="email" 
-                                    id="receiverEmail" 
-                                    placeholder="请输入邮箱地址"
-                                    class="email-input"
-                                >
-                            </div>
-                        </div>
-                    </div>
-                    <textarea 
-                        id="letterContent" 
-                        placeholder="亲爱的未来...&#10;&#10;写下此刻想说的话，让时光带去未来..."
-                        rows="12"
-                    ></textarea>
-                    <div class="letter-footer">
-                        <button id="apiButton" class="api-button">
-                            <span class="button-text">封存信件</span>
-                            <span class="button-icon">✉</span>
-                        </button>
-                    </div>
-                    <div id="apiResult" class="result-area"></div>
-                </div>
+    <main class="home-container">
+        <div class="decorative-elements">
+            <img src="images/clock-left.png" class="clock left-clock" alt="时钟">
+            <img src="images/clock-right.png" class="clock right-clock" alt="时钟">
+            <img src="images/envelope.png" class="envelope" alt="信封">
+            <img src="images/leaf-1.png" class="leaf leaf-1" alt="装饰叶子">
+            <img src="images/leaf-2.png" class="leaf leaf-2" alt="装饰叶子">
+        </div>
+
+        <div class="content-center">
+            <h1>时间胶囊 - 寄往未来的信</h1>
+            <div class="subtitle">
+                <p>清早上火车站</p>
+                <p>长街黑暗无行人</p>
+                <p>卖豆浆的小店冒着热气</p>
+                <p class="highlight">从前车马很慢</p>
+                <p class="highlight">书信很远</p>
+                <p class="highlight">一生只够爱一个人</p>
             </div>
-        </section>
-
-        <section id="about" class="about-section">
-            <div class="about-container">
-                <h2>关于时间胶囊</h2>
-                <div class="about-content">
-                    <div class="about-card">
-                        <h3>什么是时间胶囊？</h3>
-                        <p>时间胶囊是一个神奇的数字空间，它能将您此刻的思绪、情感和期望安全地保存，直到未来的某一天。就像写给未来的一封信，当时光流转，您将收到来自过去的自己的问候。</p>
-                    </div>
-                    
-                    <div class="about-card">
-                        <h3>如何使用？</h3>
-                        <ol>
-                            <li>在写信页面写下您想对未来说的话</li>
-                            <li>选择一个未来的日期</li>
-                            <li>点击"封存信件"将信件保存</li>
-                            <li>等待时间流逝，在指定日期收到信件</li>
-                        </ol>
-                    </div>
-
-                    <div class="about-card">
-                        <h3>我们的承诺</h3>
-                        <p>您的每一字每一句都将被安全加密保存，只有未来的您才能读到这份独特的时光记忆。让我们一起，把此刻的心情珍藏，让未来的自己感受时光的温度。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div id="sendModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>发送设置</h3>
-                    <button class="close-button">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="receiverEmail">收信邮箱：</label>
-                        <input 
-                            type="email" 
-                            id="receiverEmail" 
-                            placeholder="请输入邮箱地址"
-                            class="modal-input"
-                        >
-                    </div>
-                    <div class="form-group">
-                        <label for="receiveDate">收信日期：</label>
-                        <input 
-                            type="date" 
-                            id="receiveDate" 
-                            class="modal-input"
-                        >
-                    </div>
-                    <div class="form-group">
-                        <label for="isPublic">是否公开：</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="isPublic">
-                            <label for="isPublic" class="toggle-label"></label>
-                        </div>
-                        <span class="hint">公开的信件将会在「信件墙」展示</span>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-button cancel">返回修改</button>
-                    <button class="modal-button confirm">确认发送</button>
-                </div>
+            
+            <div class="input-section">
+                <button class="main-button" onclick="window.location.href='write.html'">
+                    开始写信
+                    <span class="button-icon">✉</span>
+                </button>
             </div>
         </div>
     </main>
-
-    <footer>
-        <p>&copy; 2024 我的网页. 保留所有权利。</p>
-    </footer>
-
-    <script src="js/main.js"></script>
 </body>
 </html> 

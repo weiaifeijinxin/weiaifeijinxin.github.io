@@ -92,29 +92,143 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // 获取模态框相关元素
+    const modal = document.getElementById('sendModal');
+    const closeButton = modal.querySelector('.close-button');
+    const cancelButton = modal.querySelector('.modal-button.cancel');
+    const confirmButton = modal.querySelector('.modal-button.confirm');
+    const isPublicCheckbox = document.getElementById('isPublic');
+
+    // 在文件开头添加成功弹窗元素引用
+    const successModal = document.getElementById('successModal');
+    const successMessage = document.getElementById('successMessage');
+
+    // 获取计数器元素
+    const visitCount = document.getElementById('visitCount');
+    const letterCount = document.getElementById('letterCount');
+
+    // 记录访问次数
+    async function recordVisit() {
+        try {
+            const response = await fetch('https://api.codenow.cn/1/classes/Statistics', {
+                method: 'POST',
+                headers: {
+                    'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+                    'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    type: 'visit',
+                    timestamp: formatDateTime(new Date())
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to record visit');
+            }
+        } catch (error) {
+            console.error('Error recording visit:', error);
+        }
+    }
+
+    // 获取统计数据
+    async function fetchStatistics() {
+        try {
+            const response = await fetch('https://api.codenow.cn/1/classes/Statistics', {
+                headers: {
+                    'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+                    'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch statistics');
+            }
+
+            const data = await response.json();
+            
+            // 更新显示
+            const visits = data.results.filter(item => item.type === 'visit').length;
+            const letters = data.results.filter(item => item.type === 'letter').length;
+            
+            updateCounter(visitCount, visits);
+            updateCounter(letterCount, letters);
+        } catch (error) {
+            console.error('Error fetching statistics:', error);
+        }
+    }
+
+    // 更新计数器显示
+    function updateCounter(element, value) {
+        element.textContent = value.toLocaleString();
+        element.classList.remove('animate');
+        void element.offsetWidth; // 触发重排
+        element.classList.add('animate');
+    }
+
+    // 记录成功发送的信件
+    async function recordLetter() {
+        try {
+            const response = await fetch('https://api.codenow.cn/1/classes/Statistics', {
+                method: 'POST',
+                headers: {
+                    'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+                    'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    type: 'letter',
+                    timestamp: formatDateTime(new Date())
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to record letter');
+            }
+
+            // 更新统计数据显示
+            fetchStatistics();
+        } catch (error) {
+            console.error('Error recording letter:', error);
+        }
+    }
+
+    // 初始化：记录访问并获取统计数据
+    recordVisit().then(() => fetchStatistics());
+
     // 修改请求部分
     apiButton.addEventListener('click', function() {
-        // 首先验证信件内容
         if (!letterContent.value.trim()) {
             apiResult.textContent = '请先写下您想对未来说的话...';
             apiResult.style.color = '#e74c3c';
             return;
         }
 
+        // 添加背景模糊效果
+        document.querySelector('.letter-container').classList.add('blur');
+        
         // 显示模态框
         modal.classList.add('show');
+        modal.style.display = 'flex';  // 确保模态框显示
+        modal.style.opacity = '1';     // 设置透明度
+        
+        // 设置模态框内容的动画
         setTimeout(() => {
-            modal.querySelector('.modal-content').style.transform = 'translateY(0)';
-            modal.querySelector('.modal-content').style.opacity = '1';
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.transform = 'translateY(0)';
+            modalContent.style.opacity = '1';
         }, 10);
     });
 
-    // 关闭模态框
+    // 修改关闭模态框函数
     function closeModal() {
-        modal.querySelector('.modal-content').style.transform = 'translateY(-20px)';
+        modal.querySelector('.modal-content').style.transform = 'translateY(-50px)';
         modal.querySelector('.modal-content').style.opacity = '0';
+        
         setTimeout(() => {
             modal.classList.remove('show');
+            // 移除背景模糊效果
+            document.querySelector('.letter-container').classList.remove('blur');
         }, 300);
     }
 
@@ -163,20 +277,59 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(`服务器错误：${response.statusText}`);
             }
 
-            // 发送成功
-            closeModal();
-            apiResult.textContent = `您的信件已经成功封存，将在 ${new Date(receiveDateInput.value).toLocaleDateString('zh-CN', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            })} 发送至您的邮箱`;
-            apiResult.style.color = '#27ae60';
+            // 记录成功发送的信件
+            await recordLetter();
 
-            // 清空表单
-            letterContent.value = '';
-            receiveDateInput.value = '';
-            receiverEmail.value = '';
-            isPublicCheckbox.checked = false;
+            // 关闭设置弹窗
+            modal.style.opacity = '0';
+            modal.querySelector('.modal-content').style.transform = 'translateY(-50px)';
+            modal.querySelector('.modal-content').style.opacity = '0';
+            
+            setTimeout(() => {
+                modal.classList.remove('show');
+                modal.style.display = 'none';
+
+                // 显示成功弹窗
+                const formattedDate = new Date(receiveDateInput.value).toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                successMessage.textContent = `您的信件已经成功封存，将在 ${formattedDate} 发送至您的邮箱`;
+                
+                successModal.style.display = 'flex';
+                successModal.classList.add('show');
+                
+                // 确保动画效果
+                setTimeout(() => {
+                    successModal.style.opacity = '1';
+                    successModal.querySelector('.modal-content').style.transform = 'translateY(0)';
+                    successModal.querySelector('.modal-content').style.opacity = '1';
+                }, 10);
+
+                // 3秒后自动关闭成功提示
+                setTimeout(() => {
+                    // 关闭成功弹窗
+                    successModal.style.opacity = '0';
+                    successModal.querySelector('.modal-content').style.transform = 'translateY(-50px)';
+                    successModal.querySelector('.modal-content').style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        successModal.classList.remove('show');
+                        successModal.style.display = 'none';
+                        // 移除背景模糊效果
+                        document.querySelector('.letter-container').classList.remove('blur');
+
+                        // 重置所有表单
+                        letterContent.value = '';
+                        receiveDateInput.value = '';
+                        receiverEmail.value = '';
+                        isPublicCheckbox.checked = false;
+                        apiResult.textContent = '';
+                    }, 300);
+                }, 3000);
+            }, 300);
 
         } catch (error) {
             alert('发送失败：' + error.message);
@@ -203,8 +356,28 @@ document.addEventListener('DOMContentLoaded', function() {
         return error.message;
     }
     
-    
-    
+    // 点击成功弹窗外部也可以关闭
+    successModal.addEventListener('click', function(e) {
+        if (e.target === successModal) {
+            successModal.style.opacity = '0';
+            successModal.querySelector('.modal-content').style.transform = 'translateY(-50px)';
+            successModal.querySelector('.modal-content').style.opacity = '0';
+            
+            setTimeout(() => {
+                successModal.classList.remove('show');
+                successModal.style.display = 'none';
+                // 移除背景模糊效果
+                document.querySelector('.letter-container').classList.remove('blur');
+                
+                // 重置所有表单
+                letterContent.value = '';
+                receiveDateInput.value = '';
+                receiverEmail.value = '';
+                isPublicCheckbox.checked = false;
+                apiResult.textContent = '';
+            }, 300);
+        }
+    });
 });
 
 function checkNetworkError(error) {

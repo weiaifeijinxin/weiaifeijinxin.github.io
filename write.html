@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>时间胶囊 - 写信</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <div class="back-button" onclick="window.location.href='index.html'">
+        <span class="back-icon">←</span>
+        <span>返回首页</span>
+    </div>
+
+    <main>
+        <section id="home">
+            <h2>写信</h2>
+            <div class="letter-container">
+                <div class="letter-form">
+                    <div class="letter-header">
+                        <div class="date">写信日期：<span id="currentDate"></span></div>
+                    </div>
+                    <textarea 
+                        id="letterContent" 
+                        placeholder="亲爱的未来...&#10;&#10;写下此刻想说的话，让时光带去未来..."
+                        rows="12"
+                    ></textarea>
+                    <div class="letter-footer">
+                        <button id="apiButton" class="api-button">
+                            <span class="button-text">封存信件</span>
+                            <span class="button-icon">✉</span>
+                        </button>
+                    </div>
+                    <div id="apiResult" class="result-area"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 发送设置弹窗 -->
+        <div id="sendModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>发送设置</h3>
+                    <button class="close-button">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="receiverEmail">收信邮箱：</label>
+                        <input 
+                            type="email" 
+                            id="receiverEmail" 
+                            placeholder="请输入邮箱地址"
+                            class="modal-input"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="receiveDate">收信日期：</label>
+                        <input 
+                            type="date" 
+                            id="receiveDate" 
+                            class="modal-input"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="isPublic">是否公开：</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="isPublic">
+                            <label for="isPublic" class="toggle-label"></label>
+                        </div>
+                        <span class="hint">公开的信件将会在「信件墙」展示</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-button cancel">返回修改</button>
+                    <button class="modal-button confirm">确认发送</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 成功提示弹窗 -->
+        <div id="successModal" class="modal success-modal">
+            <div class="modal-content success-content">
+                <div class="success-icon">✓</div>
+                <h3>发送成功</h3>
+                <p id="successMessage"></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 
