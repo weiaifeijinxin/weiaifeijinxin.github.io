@@ -3,6 +3,8 @@
     --primary-color: #D88C7E;
     --accent-color: #95C5B0;
     --text-color: #2D4356;
+    --content-width: min(90%, 1200px);
+    --spacing-unit: clamp(1rem, 2vw, 2rem);
 }
 
 body {
@@ -277,5 +279,65 @@ body {
 
     .quote-main h3 {
         font-size: 24px;
+    }
+} 
+
+/* 基础响应式设置 */
+:root {
+    --content-width: min(90%, 1200px);
+    --spacing-unit: clamp(1rem, 2vw, 2rem);
+}
+
+/* 响应式字体大小 */
+html {
+    font-size: clamp(14px, 1.5vw, 16px);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .back-button {
+        top: 10px;
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    .letter-container {
+        margin: 40px auto 20px;
+        padding: 0 15px;
+    }
+
+    .letter-form {
+        padding: 20px;
+    }
+
+    textarea {
+        font-size: 16px; /* 防止iOS自动缩放 */
+        padding: 0 15px 15px 30px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .modal-input {
+        font-size: 16px; /* 防止iOS自动缩放 */
+    }
+}
+
+/* 适配超小屏幕 */
+@media (max-width: 320px) {
+    .modal-content {
+        padding: 15px;
+    }
+
+    .modal-button {
+        padding: 8px 15px;
+        font-size: 14px;
     }
 } 

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // API配置
     const API_CONFIG = {
-        URL: 'http://timepill.api.northcity.top/1/classes/XinList',
+        URL: 'https://api.codenow.cn/1/classes/XinList',
         HEADERS: {
             'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
             'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
@@ -81,17 +81,69 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.letter-container').classList.add('blur');
     }
 
-    // 事件监听
+    // 添加文本框焦点效果
+    letterContent.addEventListener('focus', function() {
+        this.parentElement.style.boxShadow = '0 0 20px rgba(44, 62, 80, 0.1)';
+    });
+
+    letterContent.addEventListener('blur', function() {
+        this.parentElement.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+    });
+
+    // 封存信件按钮点击事件
     apiButton.addEventListener('click', function() {
         if (!letterContent.value.trim()) {
             alert('请输入信件内容');
             return;
         }
-        openModal();
+        openModal(); // 直接打开弹窗
     });
+
+    // 添加网络错误检查函数
+    function checkNetworkError(error) {
+        if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+            return '网络连接失败，请检查您的网络连接';
+        }
+        if (error.message.includes('NetworkError')) {
+            return '网络错误，可能是跨域问题';
+        }
+        return error.message;
+    }
 
     closeButton.addEventListener('click', closeModal);
     cancelButton.addEventListener('click', closeModal);
+
+    // 添加加载状态显示
+    function showLoading(button, text = '处理中...') {
+        button.disabled = true;
+        button.dataset.originalText = button.textContent;
+        button.textContent = text;
+        button.classList.add('loading');
+    }
+
+    function hideLoading(button) {
+        button.disabled = false;
+        button.textContent = button.dataset.originalText;
+        button.classList.remove('loading');
+    }
+
+    // 优化错误提示
+    function showError(message) {
+        const errorToast = document.createElement('div');
+        errorToast.className = 'error-toast';
+        errorToast.textContent = message;
+        document.body.appendChild(errorToast);
+
+        setTimeout(() => {
+            errorToast.classList.add('show');
+            setTimeout(() => {
+                errorToast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(errorToast);
+                }, 300);
+            }, 3000);
+        }, 100);
+    }
 
     confirmButton.addEventListener('click', async function() {
         const email = receiverEmail.value;
@@ -111,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
         confirmButton.textContent = '发送中...';
 
         try {
+            // 发送信件内容
             const response = await fetch(API_CONFIG.URL, {
                 method: 'POST',
                 headers: API_CONFIG.HEADERS,
@@ -119,29 +172,45 @@ document.addEventListener('DOMContentLoaded', function() {
                     email: email,
                     receiveDate: receiveDate,
                     isPublic: isPublicCheckbox.checked,
-                    sendDate: formatDateTime(new Date())
+                    sendDate: formatDateTime(new Date()),
+                    type: 'letter'
                 })
             });
 
             if (!response.ok) {
-                throw new Error('发送失败');
+                const errorData = await response.json();
+                throw new Error(errorData.error || '发送失败');
+            }
+
+            // 添加错误处理和重试机制
+            const retryCount = 3;
+            let retryAttempt = 0;
+            
+            while (retryAttempt < retryCount) {
+                try {
+                    await fetch(API_CONFIG.URL, {
+                        method: 'POST',
+                        headers: API_CONFIG.HEADERS,
+                        body: JSON.stringify({
+                            type: 'letter_count',
+                            timestamp: formatDateTime(new Date())
+                        })
+                    });
+                    break;
+                } catch (error) {
+                    retryAttempt++;
+                    if (retryAttempt === retryCount) {
+                        console.error('统计记录失败：', error);
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
             }
 
             closeModal();
-            showSuccessModal('信件已成功封存，将在指定日期发送至您的邮箱');
-
-            // 记录信件发送
-            await fetch(API_CONFIG.URL, {
-                method: 'POST',
-                headers: API_CONFIG.HEADERS,
-                body: JSON.stringify({
-                    type: 'letter',
-                    timestamp: formatDateTime(new Date())
-                })
-            });
+            showSuccessModal(`信件已成功封存，将在 ${receiveDate} 发送至邮箱：${email}`);
 
         } catch (error) {
-            alert('发送失败：' + error.message);
+            alert('发送失败：' + checkNetworkError(error));
         } finally {
             confirmButton.disabled = false;
             confirmButton.textContent = '确认发送';

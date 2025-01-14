@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 获取统计数据
     async function fetchStats() {
         try {
-            const response = await fetch('http://timepill.api.northcity.top/1/classes/Statistics', {
+            const response = await fetch('https://api.codenow.cn/1/classes/Statistics', {
                 headers: {
                     'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
                     'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91'

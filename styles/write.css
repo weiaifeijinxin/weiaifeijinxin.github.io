@@ -143,6 +143,8 @@ textarea:focus {
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .modal.show {
@@ -153,7 +155,7 @@ textarea:focus {
 }
 
 .modal-content {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
     padding: 30px;
     border-radius: 12px;
     width: 90%;
@@ -161,6 +163,8 @@ textarea:focus {
     position: relative;
     transform: translateY(0);
     transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .modal-header {
@@ -255,5 +259,45 @@ textarea:focus {
 
     .modal-content {
         padding: 20px;
+    }
+} 
+
+/* 添加模糊效果类 */
+.blur {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+    pointer-events: none;
+} 
+
+/* 触摸设备优化 */
+@media (hover: none) {
+    .api-button:active {
+        transform: scale(0.98);
+    }
+
+    .modal-button:active {
+        opacity: 0.8;
+    }
+
+    /* 增加可点击区域 */
+    .form-group label {
+        padding: 8px 0;
+    }
+
+    .modal-input {
+        padding: 12px;
+    }
+
+    /* 优化滚动体验 */
+    .modal-content {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* 防止键盘弹出时页面变形 */
+@media screen and (max-height: 450px) {
+    .modal-content {
+        max-height: 85vh;
+        overflow-y: auto;
     }
 } 
