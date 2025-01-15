@@ -10,32 +10,48 @@ function formatDateTime(date) {
 }
 
 // 导出 getStats 函数
- async function getStats() {
+async function getStats() {
     try {
-        const response = await fetch('https://api.codenow.cn/1/classes/Statistics', {
-            method: 'GET',
-            headers: {
-                'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
-                'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
-                'Content-Type': 'application/json'
-            }
-        });
+        let allResults = [];
+        let skip = 0;
+        const limit = 100;
+        let hasMore = true;
 
-        if (!response.ok) {
-            throw new Error('获取统计失败');
+        // 循环获取所有数据
+        while (hasMore) {
+            const response = await fetch(`https://api.codenow.cn/1/classes/Statistics?limit=${limit}&skip=${skip}`, {
+                method: 'GET',
+                headers: {
+                    'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+                    'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('获取统计失败');
+            }
+
+            const data = await response.json();
+            allResults = allResults.concat(data.results);
+            
+            // 如果返回的数据少于limit，说明已经没有更多数据了
+            if (data.results.length < limit) {
+                hasMore = false;
+            } else {
+                skip += limit; // 增加偏移量，获取下一页数据
+            }
         }
 
-        const data = await response.json();
-        
         // 更新显示
         const visitCount = document.getElementById('visitCount');
         const letterCount = document.getElementById('letterCount');
         
         if (visitCount) {
-            visitCount.textContent = data.results.filter(item => item.type === 'visit').length;
+            visitCount.textContent = allResults.filter(item => item.type === 'visit').length;
         }
         if (letterCount) {
-            letterCount.textContent = data.results.filter(item => item.type === 'letter').length;
+            letterCount.textContent = allResults.filter(item => item.type === 'letter').length;
         }
 
     } catch (error) {
