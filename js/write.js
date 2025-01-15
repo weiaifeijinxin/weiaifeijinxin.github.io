@@ -211,6 +211,22 @@ document.addEventListener('DOMContentLoaded', function() {
             closeModal();
             showSuccessModal(`信件已成功封存，将在 ${receiveDate} 发送至邮箱：${email}`);
 
+            // 发信成功后，单独记录次数
+            fetch('https://api.codenow.cn/1/classes/Statistics', {
+                method: 'POST',
+                headers: {
+                    'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+                    'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    type: 'letter',
+                    timestamp: formatDateTime(new Date())
+                })
+            }).catch(error => {
+                console.error('记录信件统计失败:', error);
+            });
+
         } catch (error) {
             alert('发送失败：' + error.message);
         } finally {
@@ -218,31 +234,4 @@ document.addEventListener('DOMContentLoaded', function() {
             confirmButton.textContent = '确认发送';
         }
     });
-
-    // 点击模态框外部关闭
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-
-    // 点击成功弹窗外部也可以关闭
-    successModal.addEventListener('click', function(e) {
-        if (e.target === successModal) {
-            successModal.style.opacity = '0';
-            successModal.querySelector('.modal-content').style.transform = 'translateY(-50px)';
-            
-            setTimeout(() => {
-                successModal.style.display = 'none';
-                document.querySelector('.letter-container').classList.remove('blur');
-                
-                // 重置所有表单
-                letterContent.value = '';
-                receiveDateInput.value = '';
-                receiverEmail.value = '';
-                isPublicCheckbox.checked = false;
-                apiResult.textContent = '';
-            }, 300);
-        }
-    });
-}); 
+});

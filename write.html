@@ -8,9 +8,8 @@
     <link rel="stylesheet" href="styles/write.css">
 </head>
 <body>
-    <div class="back-button" onclick="window.location.href='index.html'">
-        <span class="back-icon">←</span>
-        <span>返回首页</span>
+    <div class="back-button" onclick="window.location.href='index.html'" title="返回首页">
+        ←
     </div>
 
     <main>
@@ -26,8 +25,7 @@
                 ></textarea>
                 <div class="letter-footer">
                     <button id="apiButton" class="api-button">
-                        <span class="button-text">封存信件</span>
-                        <span class="button-icon">✉</span>
+                        <span class="button-icon">✓</span>
                     </button>
                 </div>
                 <div id="apiResult" class="result-area"></div>
@@ -67,7 +65,10 @@
         <!-- 成功提示弹窗 -->
         <div id="successModal" class="modal success-modal">
             <div class="modal-content">
-                <div class="success-icon">✓</div>
+                <div class="success-header">
+                    <img src="images/youchuo.png" alt="邮戳" class="postmark">
+                    <div class="success-icon">✓</div>
+                </div>
                 <h3>发送成功</h3>
                 <p id="successMessage"></p>
             </div>

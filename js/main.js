@@ -64,30 +64,30 @@ async function recordVisit() {
         const responseData = await response.json();
         // console.log('访问记录响应:', responseData);
         
-        // 创建提示框
-        const toast = document.createElement('div');
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-size: 14px;
-            z-index: 10000;
-            transition: opacity 0.3s ease;
-        `;
-        toast.textContent = statusMessage;
-        document.body.appendChild(toast);
+        // // 创建提示框
+        // const toast = document.createElement('div');
+        // toast.style.cssText = `
+        //     position: fixed;
+        //     bottom: 20px;
+        //     left: 50%;
+        //     transform: translateX(-50%);
+        //     background: rgba(0, 0, 0, 0.7);
+        //     color: white;
+        //     padding: 10px 20px;
+        //     border-radius: 4px;
+        //     font-size: 14px;
+        //     z-index: 10000;
+        //     transition: opacity 0.3s ease;
+        // `;
+        // toast.textContent = statusMessage;
+        // document.body.appendChild(toast);
 
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => {
-                document.body.removeChild(toast);
-            }, 300);
-        }, 3000);
+        // setTimeout(() => {
+        //     toast.style.opacity = '0';
+        //     setTimeout(() => {
+        //         document.body.removeChild(toast);
+        //     }, 300);
+        // }, 3000);
 
         if (!response.ok) {
             throw new Error('记录访问失败');
@@ -99,29 +99,29 @@ async function recordVisit() {
     } catch (error) {
         console.error('记录访问失败:', error);
         
-        const errorToast = document.createElement('div');
-        errorToast.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 0, 0, 0.7);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-size: 14px;
-            z-index: 10000;
-            transition: opacity 0.3s ease;
-        `;
-        errorToast.textContent = `请求失败: ${error.message}`;
-        document.body.appendChild(errorToast);
+        // const errorToast = document.createElement('div');
+        // errorToast.style.cssText = `
+        //     position: fixed;
+        //     bottom: 20px;
+        //     left: 50%;
+        //     transform: translateX(-50%);
+        //     background: rgba(255, 0, 0, 0.7);
+        //     color: white;
+        //     padding: 10px 20px;
+        //     border-radius: 4px;
+        //     font-size: 14px;
+        //     z-index: 10000;
+        //     transition: opacity 0.3s ease;
+        // `;
+        // errorToast.textContent = `请求失败: ${error.message}`;
+        // document.body.appendChild(errorToast);
 
-        setTimeout(() => {
-            errorToast.style.opacity = '0';
-            setTimeout(() => {
-                document.body.removeChild(errorToast);
-            }, 300);
-        }, 3000);
+        // setTimeout(() => {
+        //     errorToast.style.opacity = '0';
+        //     setTimeout(() => {
+        //         document.body.removeChild(errorToast);
+        //     }, 300);
+        // }, 3000);
     }
 }
 
@@ -130,4 +130,13 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('页面加载完成，开始记录访问...'); // 添加日志
     recordVisit(); // 记录访问
     getStats();    // 获取统计数据
+});
+
+// 随机选择邮票图片
+document.addEventListener('DOMContentLoaded', function() {
+    const stampImg = document.querySelector('.stamp');
+    if (stampImg) {
+        const randomIndex = Math.floor(Math.random() * 14); // 0-13的随机数
+        stampImg.src = `images/youpiao/youpiao${randomIndex}.png`;
+    }
 }); 
