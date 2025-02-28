@@ -50,15 +50,50 @@ body {
 
 .letter-form {
     background-color: #fff;
-    padding: 40px;
+    padding: 40px 40px 60px;  /* 增加底部内边距 */
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     position: relative;
+    min-height: 600px;  /* 最小高度 */
+    height: auto;  /* 自适应高度 */
+    overflow: hidden;  /* 防止内容溢出 */
+}
+
+/* 修改日期样式 */
+.letter-header {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    margin: 0;
+    color: #666;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 14px;
+    z-index: 1;
+    background: transparent;  /* 移除白色背景 */
+}
+
+.date {
+    text-align: right;
+    margin: 0;
+    padding: 0;
+}
+
+/* 信纸背景线条 */
+.letter-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-image: linear-gradient(#e5e5e5 1px, transparent 1px);
     background-size: 100% 32px;
     background-position: 0 100px;
+    pointer-events: none;  /* 防止干扰文字输入 */
+    z-index: 0;
 }
 
+/* 左侧红线 */
 .letter-form::after {
     content: '';
     position: absolute;
@@ -68,46 +103,15 @@ body {
     width: 1px;
     background-color: #ff9999;
     opacity: 0.5;
+    pointer-events: none;
 }
 
-.letter-form:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-}
-
-/* 信纸装饰 */
-.letter-form::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 30px;
-    height: 100%;
-    width: 2px;
-    background: linear-gradient(to bottom, transparent 0%, #ff9999 20%, #ff9999 80%, transparent 100%);
-    opacity: 0.3;
-}
-
-.letter-header {
-    margin-bottom: 30px;
-    color: #666;
-    font-family: 'Noto Serif SC', serif;
-    font-size: 1.2em;
-    background-color: #fff;
-    position: relative;
-    z-index: 1;
-    padding-bottom: 10px;
-}
-
-.date {
-    text-align: right;
-    margin-bottom: 20px;
-    padding-right: 20px;
-}
-
+/* 文本区域样式 */
 textarea {
-    width: 100%;
+    width: calc(100% - 70px);  /* 减去左右内边距 */
     min-height: 500px;
-    padding: 0 20px 20px 50px;
+    margin-top: 60px;  /* 为日期留出空间 */
+    padding: 0 0 20px 50px;  /* 调整内边距 */
     border: none;
     background: transparent;
     font-family: 'Noto Serif SC', serif;
@@ -115,6 +119,8 @@ textarea {
     line-height: 32px;
     color: #2c3e50;
     resize: vertical;
+    position: relative;
+    z-index: 1;
 }
 
 textarea:focus {
@@ -392,18 +398,31 @@ input:checked + .toggle-label:before {
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .modal-content {
-        width: 90%;
-        padding: 20px;
-    }
-    
-    .modal-button {
-        padding: 8px 15px;
+    .letter-container {
+        margin: 40px auto 20px;
+        padding: 0 15px;
     }
 
-    .letter-footer {
-        bottom: 20px;
+    .letter-form {
+        padding: 30px 20px 40px;  /* 调整移动端内边距 */
+    }
+
+    .letter-header {
+        top: 15px;
         right: 20px;
+        font-size: 12px;
+    }
+
+    textarea {
+        width: calc(100% - 40px);  /* 调整移动端宽度 */
+        padding: 0 0 20px 30px;
+        margin-top: 50px;
+        font-size: 16px;  /* 防止iOS自动缩放 */
+        line-height: 28px;
+    }
+
+    .letter-form::after {
+        left: 20px;  /* 调整移动端红线位置 */
     }
 }
 
