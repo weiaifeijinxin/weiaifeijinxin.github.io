@@ -1,9 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 先获取所有需要的元素
+    // 必须最前面获取所有表单元素
     const letterContent = document.getElementById('letterContent');
     const receiverEmail = document.getElementById('receiverEmail');
     const receiveDateInput = document.getElementById('receiveDate');
     const isPublicCheckbox = document.getElementById('isPublic');
+    const apiButton = document.getElementById('apiButton');
+    const apiResult = document.getElementById('apiResult');
+    const modal = document.getElementById('sendModal');
+    const closeButton = modal.querySelector('.close-button');
+    const cancelButton = modal.querySelector('.modal-button.cancel');
+    const confirmButton = modal.querySelector('.modal-button.confirm');
+    const successModal = document.getElementById('successModal');
+    const successMessage = document.getElementById('successMessage');
+    const currentDate = document.getElementById('currentDate');
 
     // 草稿缓存 key
     const DRAFT_KEY = 'letter_draft';
@@ -41,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 设置当前日期
-    const currentDate = document.getElementById('currentDate');
     const today = new Date();
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     currentDate.textContent = today.toLocaleDateString('zh-CN', options);
@@ -50,16 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
     receiveDateInput.min = tomorrow.toISOString().split('T')[0];
-
-    // 获取所有需要的元素
-    const apiButton = document.getElementById('apiButton');
-    const apiResult = document.getElementById('apiResult');
-    const modal = document.getElementById('sendModal');
-    const closeButton = modal.querySelector('.close-button');
-    const cancelButton = modal.querySelector('.modal-button.cancel');
-    const confirmButton = modal.querySelector('.modal-button.confirm');
-    const successModal = document.getElementById('successModal');
-    const successMessage = document.getElementById('successMessage');
 
     // API配置
     const API_CONFIG = {
