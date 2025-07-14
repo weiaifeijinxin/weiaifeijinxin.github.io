@@ -107,9 +107,8 @@ function formatDateToDay(dateStr) {
 
 
 function getRandomStampUrl() {
-    // 假设有 youpiao0.png ~ youpiao13.png
-    const idx = Math.floor(Math.random() * 14);
-    return `images/youpiao/youpiao${idx}.png`;
+    // 使用绝对路径，适配所有页面和手机端
+    return window.location.origin + '/images/youpiao/youpiao' + Math.floor(Math.random() * 14) + '.png';
 }
 
 // 渲染信件，支持追加模式
@@ -191,11 +190,17 @@ function renderMailbox(mails, append = false) {
             // 图片展示
             let imgUrl = '';
             if (currentTab === 'shqs') {
-                imgUrl = mail.xinimageurl;
+                imgUrl = mail.xinimageurl || mail.image || '';
             } else {
-                imgUrl = mail.xinimageurl;
+                imgUrl = mail.xinimageurl || mail.image || '';
             }
             if (imgUrl) {
+                // 兼容绝对/相对路径
+                if (!/^https?:\/\//.test(imgUrl) && !imgUrl.startsWith('/')) {
+                    imgUrl = window.location.origin + '/' + imgUrl.replace(/^\/*/, '');
+                } else if (imgUrl.startsWith('/')) {
+                    imgUrl = window.location.origin + imgUrl;
+                }
                 const img = document.createElement('img');
                 img.src = imgUrl;
                 img.alt = currentTab === 'image' ? '定格时空图片' : '三行情书图片';
