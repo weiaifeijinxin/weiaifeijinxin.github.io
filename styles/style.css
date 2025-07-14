@@ -393,18 +393,15 @@ button:hover, .main-button:hover, .api-button:hover, .modal-button.confirm:hover
 
 /* 圆形图标按钮样式 */
 .nav-links a {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: #FFD699;
-    color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-size: 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(255, 214, 153, 0.3);
+    /* 恢复主页风格，去除圆形按钮样式 */
+    background: none;
+    color: var(--text-color, #2D4356);
+    display: inline-block;
+    font-size: 18px;
+    padding: 8px 24px;
+    border-radius: 20px;
+    box-shadow: none;
+    transition: background 0.3s, color 0.3s;
 }
 
 .nav-links a:hover {

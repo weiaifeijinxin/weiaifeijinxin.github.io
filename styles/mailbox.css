@@ -102,4 +102,19 @@
         font-size: 24px;
         margin-bottom: 24px;
     }
+    /* 适配顶部导航栏 */
+    .top-nav {
+        padding: 10px 0;
+    }
+    .nav-links {
+        gap: 10px;
+    }
+    .nav-links a {
+        font-size: 16px;
+        padding: 6px 12px;
+        width: auto;
+        height: auto;
+        border-radius: 16px;
+        box-shadow: none;
+    }
 } 
