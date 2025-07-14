@@ -1,3 +1,147 @@
+/* 列表底部加载提示样式 */
+.loading-bottom {
+    margin: 24px auto 18px auto;
+    padding: 12px 0;
+    text-align: center;
+    font-size: 1.12em;
+    color: #ff9800;
+    background: #fffbe6;
+    border-radius: 8px;
+    width: 90%;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.07);
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+/* 三行情书诗意样式 */
+.shqs-quote-box {
+    background: #fff9f3;
+    border-left: 4px solid var(--primary-color, #FFD699);
+    border-radius: 10px;
+    margin: 18px 0 8px 0;
+    padding: 22px 18px 22px 28px;
+    font-size: 1.18rem;
+    color: #d88c7e;
+    font-family: 'Noto Serif SC', serif;
+    position: relative;
+    text-align: left;
+    line-height: 2.1;
+    box-shadow: 0 2px 10px rgba(255,214,153,0.07);
+    word-break: break-all;
+}
+.shqs-quote-mark {
+    font-size: 2.2em;
+    color: #e6b07a;
+    vertical-align: top;
+    font-family: serif;
+    font-weight: bold;
+    line-height: 1;
+}
+.shqs-quote-content {
+    color: #d88c7e;
+    font-size: 1.18em;
+    font-family: 'Noto Serif SC', serif;
+    padding: 0 6px;
+    letter-spacing: 1px;
+    display: inline-block;
+    vertical-align: middle;
+}
+@media (max-width: 700px) {
+    .shqs-quote-box {
+        font-size: 1.01rem;
+        padding: 14px 8px 14px 16px;
+    }
+    .shqs-quote-mark {
+        font-size: 1.5em;
+    }
+}
+/* 子tab美化与适配 */
+.mailbox-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 32px;
+    margin-top: 10px;
+}
+.tab-btn {
+    background: #fff;
+    color: var(--primary-color, #FFD699);
+    border: 1.5px solid var(--primary-color, #FFD699);
+    border-radius: 22px;
+    padding: 7px 28px;
+    font-size: 1.08rem;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(.4,0,.2,1);
+    outline: none;
+    box-shadow: 0 2px 8px rgba(255,214,153,0.07);
+    letter-spacing: 1px;
+}
+.tab-btn.active, .tab-btn:hover {
+    background: var(--primary-color, #FFD699);
+    color: #fff;
+    border-color: var(--primary-color, #FFD699);
+    box-shadow: 0 4px 16px rgba(255,214,153,0.13);
+    transform: translateY(-2px) scale(1.04);
+}
+
+@media (max-width: 700px) {
+    .mailbox-tabs {
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+    .tab-btn {
+        font-size: 0.98rem;
+        padding: 6px 12px;
+        border-radius: 15px;
+        min-width: 0;
+    }
+}
+/* 子tab美化与适配 */
+.mailbox-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 32px;
+    margin-top: 10px;
+}
+.tab-btn {
+    background: #fff;
+    color: var(--primary-color, #FFD699);
+    border: 1.5px solid var(--primary-color, #FFD699);
+    border-radius: 22px;
+    padding: 7px 28px;
+    font-size: 1.08rem;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(.4,0,.2,1);
+    outline: none;
+    box-shadow: 0 2px 8px rgba(255,214,153,0.07);
+    letter-spacing: 1px;
+}
+.tab-btn.active, .tab-btn:hover {
+    background: var(--primary-color, #FFD699);
+    color: #fff;
+    border-color: var(--primary-color, #FFD699);
+    box-shadow: 0 4px 16px rgba(255,214,153,0.13);
+    transform: translateY(-2px) scale(1.04);
+}
+
+@media (max-width: 700px) {
+    .mailbox-tabs {
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+    .tab-btn {
+        font-size: 0.98rem;
+        padding: 6px 12px;
+        border-radius: 15px;
+        min-width: 0;
+    }
+}
 :root {
     --background-color: #FFF5EE;
     --primary-color: #FFD699;
