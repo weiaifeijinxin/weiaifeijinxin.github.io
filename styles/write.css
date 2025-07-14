@@ -412,14 +412,15 @@ input:checked + .toggle-label:before {
 /* 移动端适配 */
 @media (max-width: 768px) {
     .letter-container {
-        margin: 16px auto 10px auto;
+        margin: 8px auto 0 auto;
         padding: 0 2vw;
     }
     .letter-form {
-        padding: 10px 4px 60px 4px;
+        padding: 8px 2vw 60px 2vw;
         border-radius: 10px;
-        min-height: 60vh;
+        min-height: 70vh;
         height: auto;
+        box-shadow: 0 2px 10px rgba(216,140,126,0.10);
     }
     .letter-header {
         top: 6px;
@@ -436,33 +437,54 @@ input:checked + .toggle-label:before {
     }
     textarea {
         width: 100%;
-        padding: 0 0 20px 18px;
-        margin-top: 32px;
+        padding: 0 0 18px 14px;
+        margin-top: 28px;
         font-size: 15px;
         line-height: 22px;
-        min-height: 32vh;
-        max-height: 45vh;
+        min-height: 38vh;
+        max-height: 50vh;
         background: transparent;
         box-sizing: border-box;
+        resize: vertical;
     }
     .letter-form::after {
-        left: 8px;
+        left: 6px;
     }
     .letter-footer {
-        position: static;
-        width: 100%;
-        margin-top: 10px;
-        right: 0;
+        position: sticky;
         bottom: 0;
+        width: 100%;
+        margin-top: 0;
+        right: 0;
         justify-content: flex-end;
         z-index: 10;
+        background: #fff;
+        padding-bottom: env(safe-area-inset-bottom, 8px);
+        box-shadow: 0 -2px 8px rgba(216,140,126,0.06);
     }
     .api-button {
         width: 48px;
         height: 48px;
         font-size: 22px;
     }
+    .modal-content {
+        padding: 10px 4vw;
+        max-width: 98vw;
+        min-width: 0;
+        box-sizing: border-box;
+    }
 }
+
+@media (max-width: 400px) {
+    .modal-content {
+        padding: 6px 2vw;
+        font-size: 13px;
+    }
+    .letter-header {
+        font-size: 11px;
+    }
+}
+
 /* 防止iOS输入时页面晃动 */
 @media (max-width: 768px) {
     html, body {
