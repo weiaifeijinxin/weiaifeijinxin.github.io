@@ -1,3 +1,5 @@
+
+
 /* 写信页面样式 */
 :root {
     --background-color: #FFF5EE;
@@ -16,26 +18,22 @@ body {
 
 /* 返回按钮样式 */
 .back-button {
-    position: fixed;
-    top: 16px;
-    left: 16px;
-    z-index: 1002;
-    background: rgba(255,255,255,0.92);
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
-    width: 38px;
-    height: 38px;
+    background: #FFD699;
+    color: #333;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.6em;
-    color: #d88c7e;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    cursor: pointer;
-    transition: background 0.2s;
+    font-size: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(255, 214, 153, 0.3);
 }
 
-.back-button:active {
-    background: #ffe5d0;
+.back-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 214, 153, 0.4);
 }
 
 .back-icon {
@@ -412,79 +410,41 @@ input:checked + .toggle-label:before {
 /* 移动端适配 */
 @media (max-width: 768px) {
     .letter-container {
-        margin: 8px auto 0 auto;
-        padding: 0 2vw;
+        margin: 24px auto 10px auto;
+        padding: 0 4vw;
     }
     .letter-form {
-        padding: 8px 2vw 60px 2vw;
-        border-radius: 10px;
-        min-height: 70vh;
-        height: auto;
-        box-shadow: 0 2px 10px rgba(216,140,126,0.10);
+        padding: 18px 8px 60px 8px;
+        border-radius: 12px;
+        min-height: 320px;
     }
     .letter-header {
-        top: 6px;
-        right: 8px;
-        left: 8px;
+        top: 10px;
+        right: 10px;
         font-size: 12px;
-        width: auto;
-        max-width: 95vw;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        background: transparent;
-        z-index: 2;
     }
     textarea {
         width: 100%;
-        padding: 0 0 18px 14px;
-        margin-top: 28px;
-        font-size: 15px;
-        line-height: 22px;
-        min-height: 38vh;
+        padding: 0 0 20px 20px;
+        margin-top: 40px;
+        font-size: 16px;
+        line-height: 26px;
+        min-height: 180px;
         max-height: 50vh;
         background: transparent;
-        box-sizing: border-box;
-        resize: vertical;
     }
     .letter-form::after {
-        left: 6px;
+        left: 12px;
     }
     .letter-footer {
-        position: sticky;
-        bottom: 0;
+        position: static;
         width: 100%;
-        margin-top: 0;
+        margin-top: 12px;
         right: 0;
+        bottom: 0;
         justify-content: flex-end;
-        z-index: 10;
-        background: #fff;
-        padding-bottom: env(safe-area-inset-bottom, 8px);
-        box-shadow: 0 -2px 8px rgba(216,140,126,0.06);
-    }
-    .api-button {
-        width: 48px;
-        height: 48px;
-        font-size: 22px;
-    }
-    .modal-content {
-        padding: 10px 4vw;
-        max-width: 98vw;
-        min-width: 0;
-        box-sizing: border-box;
     }
 }
-
-@media (max-width: 400px) {
-    .modal-content {
-        padding: 6px 2vw;
-        font-size: 13px;
-    }
-    .letter-header {
-        font-size: 11px;
-    }
-}
-
 /* 防止iOS输入时页面晃动 */
 @media (max-width: 768px) {
     html, body {
@@ -589,4 +549,4 @@ input:checked + .toggle-label:before {
 .success-icon {
     font-size: 32px;
     color: #4CAF50;
-}
+} 
