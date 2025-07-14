@@ -412,39 +412,55 @@ input:checked + .toggle-label:before {
 /* 移动端适配 */
 @media (max-width: 768px) {
     .letter-container {
-        margin: 24px auto 10px auto;
-        padding: 0 4vw;
+        margin: 16px auto 10px auto;
+        padding: 0 2vw;
     }
     .letter-form {
-        padding: 18px 8px 60px 8px;
-        border-radius: 12px;
-        min-height: 320px;
+        padding: 10px 4px 60px 4px;
+        border-radius: 10px;
+        min-height: 60vh;
+        height: auto;
     }
     .letter-header {
-        top: 10px;
-        right: 10px;
+        top: 6px;
+        right: 8px;
+        left: 8px;
         font-size: 12px;
+        width: auto;
+        max-width: 95vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background: transparent;
+        z-index: 2;
     }
     textarea {
         width: 100%;
-        padding: 0 0 20px 20px;
-        margin-top: 40px;
-        font-size: 16px;
-        line-height: 26px;
-        min-height: 180px;
-        max-height: 50vh;
+        padding: 0 0 20px 18px;
+        margin-top: 32px;
+        font-size: 15px;
+        line-height: 22px;
+        min-height: 32vh;
+        max-height: 45vh;
         background: transparent;
+        box-sizing: border-box;
     }
     .letter-form::after {
-        left: 12px;
+        left: 8px;
     }
     .letter-footer {
         position: static;
         width: 100%;
-        margin-top: 12px;
+        margin-top: 10px;
         right: 0;
         bottom: 0;
         justify-content: flex-end;
+        z-index: 10;
+    }
+    .api-button {
+        width: 48px;
+        height: 48px;
+        font-size: 22px;
     }
 }
 /* 防止iOS输入时页面晃动 */
