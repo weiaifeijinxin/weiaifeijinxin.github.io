@@ -1,4 +1,43 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+    // 草稿缓存 key
+    const DRAFT_KEY = 'letter_draft';
+
+    // 获取所有需要的元素（提前）
+    // 变量声明提前到顶部，后续不再重复声明
+
+    // 恢复草稿
+    const savedDraft = localStorage.getItem(DRAFT_KEY);
+    if (savedDraft) {
+        try {
+            const draft = JSON.parse(savedDraft);
+            if (draft.content && letterContent) letterContent.value = draft.content;
+            if (draft.receiverEmail && receiverEmail) receiverEmail.value = draft.receiverEmail;
+            if (draft.receiveDate && receiveDateInput) receiveDateInput.value = draft.receiveDate;
+            if (typeof draft.isPublic === 'boolean' && isPublicCheckbox) isPublicCheckbox.checked = draft.isPublic;
+        } catch(e) { /* ignore */ }
+    }
+
+    // 自动保存草稿
+    function saveDraft() {
+        const draft = {
+            content: letterContent ? letterContent.value : '',
+            receiverEmail: receiverEmail ? receiverEmail.value : '',
+            receiveDate: receiveDateInput ? receiveDateInput.value : '',
+            isPublic: isPublicCheckbox ? isPublicCheckbox.checked : false
+        };
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    }
+    if (letterContent) letterContent.addEventListener('input', saveDraft);
+    if (receiverEmail) receiverEmail.addEventListener('input', saveDraft);
+    if (receiveDateInput) receiveDateInput.addEventListener('input', saveDraft);
+    if (isPublicCheckbox) isPublicCheckbox.addEventListener('change', saveDraft);
+
+    // 发送成功后清除草稿
+    function clearDraft() {
+        localStorage.removeItem(DRAFT_KEY);
+    }
+
     // 设置当前日期
     const currentDate = document.getElementById('currentDate');
     const today = new Date();
@@ -6,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
     currentDate.textContent = today.toLocaleDateString('zh-CN', options);
     
     // 设置日期选择器的最小值为明天
-    const receiveDateInput = document.getElementById('receiveDate');
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
     receiveDateInput.min = tomorrow.toISOString().split('T')[0];
@@ -14,15 +52,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 获取所有需要的元素
     const apiButton = document.getElementById('apiButton');
     const apiResult = document.getElementById('apiResult');
-    const letterContent = document.getElementById('letterContent');
-    const receiverEmail = document.getElementById('receiverEmail');
     const modal = document.getElementById('sendModal');
     const closeButton = modal.querySelector('.close-button');
     const cancelButton = modal.querySelector('.modal-button.cancel');
     const confirmButton = modal.querySelector('.modal-button.confirm');
     const successModal = document.getElementById('successModal');
     const successMessage = document.getElementById('successMessage');
-    const isPublicCheckbox = document.getElementById('isPublic');
 
     // API配置
     const API_CONFIG = {
@@ -75,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 显示成功弹窗
     function showSuccessModal(message) {
         successMessage.textContent = message;
+        clearDraft(); // 清除草稿
         successModal.style.display = 'flex';
         successModal.classList.add('show');
         setTimeout(() => {
