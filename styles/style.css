@@ -375,6 +375,22 @@ button:hover, .main-button:hover, .api-button:hover, .modal-button.confirm:hover
     gap: 30px;
 }
 
+.nav-links a {
+    color: var(--text-color, #2D4356);
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px 24px;
+    border-radius: 20px;
+    transition: background 0.3s, color 0.3s;
+    font-family: 'Noto Serif SC', serif;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+    background: #FFD699;
+    color: #333;
+}
+
 /* 圆形图标按钮样式 */
 .nav-links a {
     width: 45px;
@@ -431,4 +447,11 @@ button:hover, .main-button:hover, .api-button:hover, .modal-button.confirm:hover
         width: 160px;
         height: 160px;
     }
+} 
+
+.mailbox-section,
+.capsule-section,
+.about-section,
+#home {
+    margin-top: 80px; /* 或根据导航栏高度调整 */
 } 

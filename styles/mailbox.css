@@ -1,0 +1,105 @@
+:root {
+    --background-color: #FFF5EE;
+    --primary-color: #FFD699;
+    --text-color: #2D4356;
+    --card-radius: 12px;
+    --card-shadow: 0 4px 15px rgba(255, 214, 153, 0.15);
+    --font-family: 'Noto Serif SC', serif;
+}
+
+.mailbox-section {
+    padding: 60px 0;
+}
+
+.mailbox-container {
+    max-width: 900px;
+    margin: 100px auto 40px;
+    padding: 0 20px;
+}
+
+.page-title {
+    font-size: 32px;
+    color: var(--text-color, #2D4356);
+    text-align: center;
+    margin-bottom: 40px;
+    font-family: var(--font-family, 'Noto Serif SC', serif);
+}
+
+.mailbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.mail-item {
+    background: #fff;
+    border-radius: var(--card-radius, 12px);
+    box-shadow: var(--card-shadow, 0 4px 15px rgba(255, 214, 153, 0.15));
+    padding: 32px 28px 24px 28px;
+    position: relative;
+    border-left: 5px solid var(--primary-color, #FFD699);
+    transition: box-shadow 0.3s, transform 0.3s;
+    animation: fadeInUp 0.6s;
+    font-family: var(--font-family, 'Noto Serif SC', serif);
+}
+
+.mail-item:hover {
+    box-shadow: 0 8px 32px rgba(255, 214, 153, 0.25);
+    transform: translateY(-2px) scale(1.01);
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+.mail-item .mail-meta {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.mail-item .mail-content {
+    font-size: 17px;
+    color: #333;
+    white-space: pre-line;
+    margin-bottom: 8px;
+    line-height: 1.8;
+    font-family: var(--font-family, 'Noto Serif SC', serif);
+}
+
+.mail-item .mail-public {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    font-size: 12px;
+    color: var(--primary-color, #FFD699);
+    background: #333;
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.loading {
+    text-align: center;
+    color: #aaa;
+    margin: 40px 0;
+    font-size: 16px;
+    font-family: var(--font-family, 'Noto Serif SC', serif);
+}
+
+@media (max-width: 600px) {
+    .mailbox-container {
+        margin: 80px 0 20px;
+        padding: 0 8px;
+    }
+    .mail-item {
+        padding: 16px 8px 12px 12px;
+        border-radius: 10px;
+    }
+    .page-title {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+} 
