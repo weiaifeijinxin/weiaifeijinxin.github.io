@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // 先获取所有需要的元素
+    const letterContent = document.getElementById('letterContent');
+    const receiverEmail = document.getElementById('receiverEmail');
+    const receiveDateInput = document.getElementById('receiveDate');
+    const isPublicCheckbox = document.getElementById('isPublic');
 
     // 草稿缓存 key
     const DRAFT_KEY = 'letter_draft';
-
-    // 获取所有需要的元素（提前）
-    // 变量声明提前到顶部，后续不再重复声明
 
     // 恢复草稿
     const savedDraft = localStorage.getItem(DRAFT_KEY);
