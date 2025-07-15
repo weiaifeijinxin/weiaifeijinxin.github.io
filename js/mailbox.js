@@ -8,8 +8,8 @@ const API_CONFIG = {
     restKey: 'a92fd1416101a7ee4de0ee0850572b91',
     table: {
         future: 'XinList',
-        image: 'XinListNoShowImage',
-        shqs: 'UserSHQSPostNoShow'
+        image: 'XinListWithImage',
+        shqs: 'UserSHQSPost'
     }
 };
 
