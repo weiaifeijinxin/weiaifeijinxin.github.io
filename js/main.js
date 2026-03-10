@@ -19,7 +19,7 @@ async function getStats() {
 
         // 循环获取所有数据
         while (hasMore) {
-            const response = await fetch(`http://timepill.api.northcity.top/1/classes/Statistics?limit=${limit}&skip=${skip}`, {
+            const response = await fetch(`https://timepill-proxy.chenxi19930623.workers.dev/1/classes/Statistics?limit=${limit}&skip=${skip}`, {
                 method: 'GET',
                 headers: {
                     'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
@@ -62,7 +62,7 @@ async function getStats() {
 // 记录访问
 async function recordVisit() {
     try {
-        const response = await fetch('http://timepill.api.northcity.top/1/classes/Statistics', {
+        const response = await fetch('https://timepill-proxy.chenxi19930623.workers.dev/1/classes/Statistics', {
             method: 'POST',
             headers: {
                 'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
