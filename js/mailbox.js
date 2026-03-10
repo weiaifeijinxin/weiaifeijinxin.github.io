@@ -3,7 +3,7 @@ let scrollLock = false;
 // 配置
 
 const API_CONFIG = {
-    domain: 'https://api.codenow.cn',
+    domain: 'http://timepill.api.northcity.top',
     appId: '075c9e426a01a48a81aa12305924e532',
     restKey: 'a92fd1416101a7ee4de0ee0850572b91',
     table: {
