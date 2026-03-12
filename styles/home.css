@@ -5,8 +5,8 @@
     --paper-color: #fffdfa;        /* 微黄的信纸白 */
     --text-main: #4a4036;          /* 深灰棕色，不刺眼 */
     --text-muted: #8c7b6c;         /* 浅褐色辅助文字 */
-    --accent-color: #F3A738;       /* 高级复古红（火漆色） */
-    --accent-hover: #E28F22;
+    --accent-color: #FFB822;       /* 高级复古红（火漆色） */
+    --accent-hover: #E5A110;
     --line-color: #ede2d7;         /* 信纸的墨水横线 */
 }
 
@@ -168,13 +168,13 @@ body {
 .primary-btn {
     background-color: var(--accent-color);
     color: #fff;
-    box-shadow: 0 6px 20px rgba(243, 167, 56, 0.25);
+    box-shadow: 0 6px 20px rgba(255, 184, 34, 0.25);
 }
 
 .primary-btn:hover {
     background-color: var(--accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(243, 167, 56, 0.35);
+    box-shadow: 0 8px 25px rgba(255, 184, 34, 0.35);
 }
 
 .app-store-btn {

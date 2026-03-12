@@ -8,11 +8,11 @@
 
 .tab-btn {
     padding: 0.8rem 1.5rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--line-color);
     background: transparent;
     border-radius: 8px;
     font-size: 1.1rem;
-    color: var(--text-color);
+    color: var(--text-main);
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: inherit;
@@ -39,8 +39,8 @@
     background: var(--paper-color);
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 15px var(--shadow-color);
-    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(180, 160, 140, 0.15);
+    border: 1px solid var(--line-color);
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
@@ -49,16 +49,16 @@
 
 .mail-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px var(--shadow-color);
+    box-shadow: 0 8px 25px rgba(180, 160, 140, 0.15);
 }
 
 .mail-meta {
     font-size: 0.9rem;
-    color: var(--text-light);
+    color: var(--text-muted);
     margin-bottom: 1rem;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px dashed var(--border-color);
+    border-bottom: 1px dashed var(--line-color);
     padding-bottom: 0.5rem;
 }
 
@@ -71,7 +71,7 @@
 
 .mail-preview {
     line-height: 1.8;
-    color: var(--text-color);
+    color: var(--text-main);
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
@@ -85,7 +85,7 @@
     object-fit: cover;
     border-radius: 4px;
     margin-bottom: 1rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--line-color);
 }
 
 /* SHQS (Three Line Love Letter) specific */
@@ -105,11 +105,11 @@
 }
 
 .modal-header {
-    border-bottom: 2px dashed var(--border-color);
+    border-bottom: 2px dashed var(--line-color);
     padding-bottom: 1rem;
     margin-bottom: 1.5rem;
     text-align: center;
-    color: var(--text-light);
+    color: var(--text-muted);
 }
 
 .modal-full-content {
@@ -121,5 +121,5 @@
     max-width: 100%;
     border-radius: 4px;
     margin-bottom: 1rem;
-    box-shadow: 0 4px 10px var(--shadow-color);
+    box-shadow: 0 4px 10px rgba(180, 160, 140, 0.15);
 }
