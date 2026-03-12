@@ -152,12 +152,17 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px; /* SVG icon与文字的间距 */
     padding: 12px 30px;
     border-radius: 30px;
     font-size: 15px;
     letter-spacing: 1.5px;
     text-decoration: none;
     transition: all 0.3s ease;
+}
+
+.btn-icon {
+    margin-bottom: 2px; /* 光学视觉微调 */
 }
 
 .primary-btn {
@@ -207,6 +212,9 @@ body {
 
 .stat-icon {
     font-size: 22px;
+    display: flex;
+    align-items: center;
+    opacity: 0.8;
 }
 
 .stat-number {
