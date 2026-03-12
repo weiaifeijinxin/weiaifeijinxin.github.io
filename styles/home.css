@@ -1,22 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&family=Noto+Serif+SC:wght@400;500;600&display=swap');
 
 :root {
-    --bg-color: #faf5f0;           /* 温柔米胚色 */
-    --paper-color: #fffaf4;        /* 信纸白 */
-    --text-main: #4a4036;          /* 深灰棕色文字 */
-    --text-muted: #8c7b6c;         /* 浅色辅助文字 */
-    --accent-color: #d97757;       /* 温暖的砖红/火漆印色 */
-    --accent-hover: #c26547;
-    --line-color: #eaddd3;         /* 分割线颜色 */
+    --bg-color: #fdfbf7;           /* 极其浅淡的暖色背景 */
+    --paper-color: #fffdfa;        /* 微黄的信纸白 */
+    --text-main: #4a4036;          /* 深灰棕色，不刺眼 */
+    --text-muted: #8c7b6c;         /* 浅褐色辅助文字 */
+    --accent-color: #cb5c48;       /* 高级复古红（火漆色） */
+    --accent-hover: #b44d3b;
+    --line-color: #ede2d7;         /* 信纸的墨水横线 */
 }
 
 body {
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
-    /* 淡淡的网格信纸质感 */
-    background-image: radial-gradient(#e6d5c3 1px, transparent 1px);
-    background-size: 24px 24px;
+    /* 细腻的信纸网格底纹 */
+    background-image: 
+        radial-gradient(rgba(203, 190, 180, 0.25) 1px, transparent 1px),
+        radial-gradient(rgba(203, 190, 180, 0.25) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
     font-family: "Noto Serif SC", serif;
     color: var(--text-main);
     min-height: 100vh;
@@ -24,183 +27,175 @@ body {
     flex-direction: column;
 }
 
-/* 顶部导航 - 极简排版 */
+/* --- 导航栏 --- */
 .top-nav {
     width: 100%;
-    padding: 30px 0 15px;
-    text-align: center;
-    z-index: 10;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: rgba(253, 251, 247, 0.85); /* 顶部做了一点毛玻璃，但不破坏复古感 */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(220, 210, 200, 0.4);
+}
+
+.nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-text {
+    font-family: 'Zhi Mang Xing', cursive;
+    font-size: 26px;
+    color: var(--accent-color);
+    letter-spacing: 2px;
 }
 
 .nav-links {
-    display: inline-flex;
-    gap: 30px;
-    border-bottom: 1px solid var(--line-color);
-    padding-bottom: 12px;
+    display: flex;
+    gap: 35px;
 }
 
 .nav-links a {
-    color: var(--text-muted);
+    color: var(--text-main);
     text-decoration: none;
     font-size: 15px;
-    letter-spacing: 2px;
-    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
     color: var(--accent-color);
 }
 
-/* 主体容器居中 */
+/* --- 主体双列排版 (绝佳适配Web) --- */
 .home-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 140px 30px 60px;
     flex: 1;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-/* 信纸卡片 */
-.letter-paper {
-    background-color: var(--paper-color);
-    width: 100%;
-    max-width: 540px;
-    padding: 40px 30px 50px;
+    justify-content: space-between;
+    gap: 80px;
     box-sizing: border-box;
-    border-radius: 4px;
-    /* 纸张厚度和阴影 */
-    box-shadow: 0 10px 40px rgba(138, 115, 95, 0.1), 
-                0 1px 3px rgba(138, 115, 95, 0.05);
-    position: relative;
-    text-align: center;
-    border: 1px solid #f2e9e1;
 }
 
-/* 邮票风格 Icon */
-.stamp-container {
+/* --- 左半边：文案与操作 --- */
+.hero-content {
+    flex: 1;
+    max-width: 480px;
+}
+
+.stamp-wrap {
     display: inline-block;
-    padding: 6px;
+    padding: 8px;
     background: #fff;
     border: 1px dashed #d1c1b3;
-    margin-bottom: 25px;
-    transform: rotate(3deg);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-bottom: 30px;
+    box-shadow: 2px 4px 12px rgba(138, 115, 95, 0.08);
+    transform: rotate(-3deg);
+    transition: transform 0.4s ease;
 }
 
-.stamp-container:hover {
-    transform: rotate(-2deg) scale(1.05);
+.stamp-wrap:hover {
+    transform: rotate(0deg) scale(1.03);
 }
 
 .app-icon {
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
     display: block;
     object-fit: cover;
 }
 
-/* 标题与文字排版 */
 .main-title {
-    font-size: 38px;
-    font-family: 'Zhi Mang Xing', cursive; /* 引入手写行书 */
+    font-size: 58px;
+    font-family: 'Zhi Mang Xing', cursive;
     font-weight: normal;
     margin: 0;
     color: var(--text-main);
-    letter-spacing: 4px;
+    letter-spacing: 8px;
 }
 
 .tagline {
-    font-size: 14px;
-    letter-spacing: 8px;
+    font-size: 16px;
+    letter-spacing: 14px;
     color: var(--text-muted);
-    margin: 8px 0 20px 8px;
+    margin: 12px 0 30px 4px;
+    text-transform: uppercase;
 }
 
-.divider {
-    margin: 20px 0 35px;
-    opacity: 0.7;
-}
-
-.poetry {
-    margin-bottom: 40px;
-    line-height: 2.4;
+.intro-text {
     font-size: 15px;
+    line-height: 2.2;
     color: #6a5d51;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    letter-spacing: 1px;
 }
 
-.poetry p {
-    margin: 4px 0;
-}
-
-.poetry .highlight {
-    color: var(--accent-color);
-    font-size: 17px;
-}
-
-/* 操作按钮 */
+/* 操作区域 */
 .action-group {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
+    gap: 20px;
+    margin-bottom: 15px;
 }
 
 .action-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 0;
+    padding: 12px 30px;
     border-radius: 30px;
     font-size: 15px;
     letter-spacing: 1.5px;
     text-decoration: none;
     transition: all 0.3s ease;
-    width: 220px;
-    box-sizing: border-box;
 }
 
-/* 写入按钮 (模仿印章颜色) */
 .primary-btn {
     background-color: var(--accent-color);
     color: #fff;
-    box-shadow: 0 4px 15px rgba(217, 119, 87, 0.25);
+    box-shadow: 0 6px 20px rgba(203, 92, 72, 0.25);
 }
 
 .primary-btn:hover {
     background-color: var(--accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(217, 119, 87, 0.35);
+    box-shadow: 0 8px 25px rgba(203, 92, 72, 0.35);
 }
 
-.primary-btn .icon {
-    margin-right: 8px;
-}
-
-/* App Store 下载按钮 */
 .app-store-btn {
     background-color: transparent;
-    color: var(--text-muted);
-    border: 1px solid var(--line-color);
+    color: var(--text-main);
+    border: 1px solid #dcd1c7;
 }
 
 .app-store-btn:hover {
-    background-color: var(--line-color);
-    color: var(--text-main);
+    background-color: #f6efe9;
+    border-color: #c7b6a7;
 }
 
 .status-text {
-    margin-top: 24px;
     font-size: 12px;
     color: #baa898;
     letter-spacing: 1px;
+    margin-bottom: 50px;
+    padding-left: 10px;
 }
 
-/* 底部数据统计 */
+/* 数据统计 */
 .stats-footer {
-    margin-top: 40px;
     display: flex;
-    gap: 80px;
-    opacity: 0.8;
+    gap: 50px;
+    opacity: 0.85;
 }
 
 .stat-item {
@@ -211,15 +206,14 @@ body {
 }
 
 .stat-icon {
-    font-size: 24px;
-    opacity: 0.7;
+    font-size: 22px;
 }
 
 .stat-number {
     font-size: 20px;
-    font-family: -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--text-main);
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .stat-label {
@@ -227,23 +221,152 @@ body {
     letter-spacing: 1px;
 }
 
-/* 移动端适配 */
-@media (max-width: 600px) {
-    /* 手机端去掉纸张边框阴影，显得更平实自然 */
-    .letter-paper {
-        padding: 20px 10px 40px;
-        box-shadow: none;
-        background: transparent;
-        border: none;
+/* --- 右半边：真假难辨的实体信纸 --- */
+.hero-visual {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    perspective: 1200px; /* 伪3D视角 */
+}
+
+.letter-paper {
+    background-color: var(--paper-color);
+    width: 100%;
+    max-width: 440px;
+    padding: 60px 40px 80px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    /* 纸张的立体阴影 */
+    box-shadow: -15px 15px 40px rgba(162, 142, 124, 0.15), 
+                0 0 0 1px rgba(234, 221, 211, 0.6) inset;
+    transform: rotate(2deg); /* 随性的倾斜 */
+    position: relative;
+    /* 画出漂亮的信纸横线 */
+    background-image: repeating-linear-gradient(transparent, transparent 39px, var(--line-color) 39px, var(--line-color) 40px);
+    background-position: 0 45px;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 鼠标停留在信纸上时的互动 */
+.letter-paper:hover {
+    transform: rotate(0deg) translateY(-5px);
+}
+
+/* 信封顶部的半透明胶带装饰 */
+.tape {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 120px;
+    height: 35px;
+    background-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    backdrop-filter: blur(4px);
+    border-radius: 2px;
+}
+
+.poetry {
+    font-size: 17px;
+    color: #5c5044;
+    line-height: 40px; /* 字体行高精准对齐背景横线 */
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.poetry p {
+    margin: 0;
+}
+
+/* 亮色强调诗句 */
+.poetry .highlight {
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.signature {
+    margin-top: 40px;
+    text-align: right;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* --- 完美的移动端适配 (竖屏折叠排版) --- */
+@media (max-width: 860px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .nav-links {
+        gap: 25px;
     }
 
-    body {
-        background-color: var(--paper-color);
-        background-image: none;
+    .home-container {
+        /* 在手机上强制改为上下结构 */
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding-top: 140px;
+        gap: 60px;
+    }
+
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tagline {
+        margin-left: 0;
+    }
+
+    .intro-text {
+        max-width: 90%;
+    }
+
+    .action-group {
+        flex-direction: column;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .action-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .status-text {
+        padding-left: 0;
+        margin-bottom: 40px;
     }
 
     .stats-footer {
+        justify-content: center;
         gap: 40px;
-        padding-bottom: 30px;
+    }
+
+    .hero-visual {
+        justify-content: center;
+        width: 100%;
+        perspective: none;
+    }
+
+    .letter-paper {
+        /* 手机上为了阅读舒适取消倾斜和巨大阴影 */
+        transform: none;
+        padding: 40px 20px 60px;
+        box-shadow: 0 10px 30px rgba(162, 142, 124, 0.1);
+        background-position: 0 25px;
+        max-width: 100%;
+    }
+    
+    .letter-paper:hover {
+        transform: none;
+    }
+
+    .tape {
+        display: none; /* 手机屏拥挤，隐藏多余装饰 */
     }
 }

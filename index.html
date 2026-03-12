@@ -9,67 +9,73 @@
 </head>
 <body>
     <nav class="top-nav">
-        <div class="nav-links">
-            <a href="write.html">写信</a>
-            <a href="capsule.html">时间胶囊</a>
-            <a href="mailbox.html">时光信箱</a>
-            <a href="about.html">关于</a>
+        <div class="nav-container">
+            <div class="logo-text">时间胶囊</div>
+            <div class="nav-links">
+                <a href="write.html">写信</a>
+                <a href="capsule.html">时间胶囊</a>
+                <a href="mailbox.html">时光信箱</a>
+                <a href="about.html">关于</a>
+            </div>
         </div>
     </nav>
 
     <main class="home-container">
-        <!-- 信纸主体 -->
-        <div class="letter-paper">
-            <!-- 邮票风格 Logo -->
-            <div class="stamp-container">
-                <img src="images/timepillicon1024.png" alt="时间胶囊" class="app-icon">
+        <!-- 左侧文本与操作区 (Web端靠左，移动端居中) -->
+        <div class="hero-content">
+            <div class="stamp-wrap">
+                <img src="images/timepillicon1024.png" alt="时间胶囊Logo" class="app-icon" onerror="this.src='https://via.placeholder.com/65?text=Stamp'">
             </div>
             
             <h1 class="main-title">时间胶囊</h1>
             <p class="tagline">寄往未来的信</p>
             
-            <div class="divider">
-                <svg width="120" height="20" viewBox="0 0 120 20">
-                    <path d="M0 10 Q 30 20 60 10 T 120 10" fill="none" class="line-path" stroke="#d4c4b7" stroke-width="1.5" stroke-dasharray="4 4"/>
-                </svg>
-            </div>
+            <p class="intro-text">
+                在这个步履匆匆的世界里，留一份慢下来的惊喜。<br>
+                写下此刻的心声，让时光替你保管这份温暖的期许。
+            </p>
 
-            <!-- 诗意文案 -->
-            <div class="poetry">
-                <p>清早上火车站，长街黑暗无行人</p>
-                <p>卖豆浆的小店冒着热气</p>
-                <p class="highlight">从前车马很慢，书信很远</p>
-                <p class="highlight">一生只够爱一个人</p>
-            </div>
-            
-            <!-- 操作按钮 -->
             <div class="action-group">
                 <a href="write.html" class="action-btn primary-btn">
                     <span class="icon">✒️</span> 起笔写信
                 </a>
-                
                 <a href="https://apps.apple.com/cn/app/%E6%97%B6%E9%97%B4%E8%83%B6%E5%9B%8A-%E5%AF%84%E5%BE%80%E6%9C%AA%E6%9D%A5%E7%9A%84%E4%BF%A1/id1358237203" target="_blank" class="action-btn app-store-btn">
-                    📥 去 App Store 下载
+                    📥  App Store 下载
                 </a>
             </div>
             <div class="status-text">安卓版本正在用心开发中...</div>
-        </div>
-
-        <!-- 极简脚部统计 -->
-        <div class="stats-footer">
-            <div class="stat-item">
-                <span class="stat-icon">🕊️</span>
-                <div>
-                    <div class="stat-number" id="visitCount">0</div>
-                    <div class="stat-label">信使足迹</div>
+            
+            <div class="stats-footer">
+                <div class="stat-item">
+                    <span class="stat-icon">🕊️</span>
+                    <div>
+                        <div class="stat-number" id="visitCount">0</div>
+                        <div class="stat-label">信使足迹</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">✉️</span>
+                    <div>
+                        <div class="stat-number" id="letterCount">0</div>
+                        <div class="stat-label">信件封存</div>
+                    </div>
                 </div>
             </div>
-            <div class="stat-item">
-                <span class="stat-icon">✉️</span>
-                <div>
-                    <div class="stat-number" id="letterCount">0</div>
-                    <div class="stat-label">信件封存</div>
+        </div>
+
+        <!-- 右侧视觉区：高度还原的信纸 (Web端靠右，移动端靠下) -->
+        <div class="hero-visual">
+            <div class="letter-paper">
+                <div class="tape"></div>
+                <div class="poetry">
+                    <p>清早上火车站</p>
+                    <p>长街黑暗无行人</p>
+                    <p>卖豆浆的小店冒着热气</p>
+                    <br>
+                    <p class="highlight">从前车马很慢，书信很远</p>
+                    <p class="highlight">一生只够爱一个人</p>
                 </div>
+                <div class="signature">— 《从前慢》</div>
             </div>
         </div>
     </main>
