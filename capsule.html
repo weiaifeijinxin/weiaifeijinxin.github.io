@@ -4,86 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>时间胶囊</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/home.css">
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <div class="back-button" onclick="window.location.href='index.html'">
-        <span class="back-icon">←</span>
-        <span>返回首页</span>
-    </div>
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="logo-text" onclick="window.location.href='index.html'" style="cursor: pointer;">时间胶囊</div>
+            <div class="nav-links">
+                <a href="write.html">写信</a>
+                <a href="capsule.html" style="color: var(--accent-color); font-weight: bold;">时间胶囊</a>
+                <a href="mailbox.html">时光信箱</a>
+                <a href="about.html">关于</a>
+            </div>
+        </div>
+    </nav>
 
     <main>
-        <section class="capsule-section">
-            <div class="capsule-container">
-                <h2 class="page-title">时间胶囊</h2>
-                
-                <!-- 功能特点展示 -->
-                <div class="features-grid">
-                    <div class="feature-card" style="cursor:pointer" onclick="window.location.href='write.html'">
-                        <div class="feature-icon">📧</div>
-                        <h3>电子信件</h3>
-                        <p>以电子邮件形式在您指定的未来的某一天发送信件。</p>
+        <section class="subpage-container">
+            <h2 class="page-title">时间胶囊</h2>
+            
+            <!-- 功能特点展示 -->
+            <div class="features-grid">
+                <div class="feature-card" style="cursor:pointer" onclick="window.location.href='write.html'">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                     </div>
-                    <div class="feature-card" style="cursor:pointer" onclick="window.location.href='appdownload.html'">
-                        <div class="feature-icon">📸</div>
-                        <h3>带照片的信</h3>
-                        <p>封存关于记忆的照片，多年以后打开老照片，打开那份值得珍藏的回忆。</p>
-                    </div>
-                    <div class="feature-card" style="cursor:pointer" onclick="window.location.href='appdownload.html'">
-                        <div class="feature-icon">💌</div>
-                        <h3>三行情书</h3>
-                        <p>我爱你，爱说出口，三个字足矣。特别推出三行情书，附带照片，对你的他/她说出爱。</p>
-                    </div>
-                    <div class="feature-card highlight" style="cursor:pointer" onclick="window.location.href='appdownload.html'">
-                        <div class="feature-icon">✉️</div>
-                        <h3>纸短情长-纸质信纸</h3>
-                        <p>特别推出纸质信纸，将您的信件制作成精美的定制信件，装订在时间胶囊特制的信封中。在时光中封存，临近收信日期发出，让您收到信件时感动与喜悦加倍！</p>
-                        <div class="promotion-tag">限时特惠，快去体验一下吧</div>
-                    </div>
+                    <h3>电子信件</h3>
+                    <p>以电子邮件形式在您指定的未来的某一天发送信件。</p>
                 </div>
+                
+                <div class="feature-card" style="cursor:pointer" onclick="window.location.href='https://apps.apple.com/cn/app/%E6%97%B6%E9%97%B4%E8%83%B6%E5%9B%8A-%E5%AF%84%E5%BE%80%E6%9C%AA%E6%9D%A5%E7%9A%84%E4%BF%A1/id1358237203'">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    </div>
+                    <h3>带照片的信</h3>
+                    <p>封存关于记忆的照片，多年以后打开老照片，打开那份值得珍藏的回忆。</p>
+                </div>
+                
+                <div class="feature-card" style="cursor:pointer" onclick="window.location.href='https://apps.apple.com/cn/app/%E6%97%B6%E9%97%B4%E8%83%B6%E5%9B%8A-%E5%AF%84%E5%BE%80%E6%9C%AA%E6%9D%A5%E7%9A%84%E4%BF%A1/id1358237203'">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    </div>
+                    <h3>三行情书</h3>
+                    <p>我爱你，爱说出口，三个字足矣。特别推出三行情书，附带照片，对你的他说出爱。</p>
+                </div>
+                
+                <div class="feature-card highlight" style="cursor:pointer" onclick="window.location.href='https://apps.apple.com/cn/app/%E6%97%B6%E9%97%B4%E8%83%B6%E5%9B%8A-%E5%AF%84%E5%BE%80%E6%9C%AA%E6%9D%A5%E7%9A%84%E4%BF%A1/id1358237203'">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </div>
+                    <h3>纸短情长-纸质信纸</h3>
+                    <p>特别推出纸质信纸，将您的信件制作成精美的定制信件，装订在特制的信封中。在时光中封存，让收到信件时感动与喜悦加倍！</p>
+                    <div class="promotion-tag">限时特惠体验</div>
+                </div>
+            </div>
 
-                <!-- 文字展示区域 -->
-                <div class="quote-section">
-                    <div class="quote-main">
-                        <h3>时间是唯一的解药</h3>
-                        <p>过去现在及以后</p>
-                    </div>
-                    
-                    <div class="quote-grid">
-                        <div class="quote-card">
-                            <p>一霎那的回眸</p>
-                            <p>往事如烟</p>
-                        </div>
-                        
-                        <div class="quote-card">
-                            <p>这封来自过去的一封信</p>
-                            <p>诉说着未来他和她的故事</p>
-                        </div>
-                    </div>
-
-                    <div class="story-section">
-                        <p class="story-text">有一天突然一觉醒来，发现自己只是在高中的一节课上睡着了，现在经历的一切都是一场梦，阳光照在你的脸上，桌上满是你的口水，老师还在前面喋喋不休的讲着课，黑板上写着高考倒计时...</p>
-                        
-                        <div class="reflection">
-                            <p>十年的时光嗖然而过，你是否成了你当年想要成为的人，还是成了自己当年最讨厌的人。</p>
-                            <p>和十年之后的自己对话，又或者看年轻时候的自己充满希望或者干劲的想法，现在的你。与当年的你。是更加成熟还是一败涂地。</p>
-                        </div>
-                    </div>
-
-                    <div class="ending-section">
-                        <p>时间胶囊，是一段时空旅行。带着你的希望，你的梦想，你的遗憾。与你同行。</p>
-                        <p>所有消逝的感情唯有文字可以记录。</p>
-                        <div class="nostalgic-text">
-                            <p>所有的一切都是从这里开始</p>
-                            <p>熟悉的夏日 熟悉的教室 熟悉的午后阳光</p>
-                            <p>你看 我回来了</p>
-                            <p>我说 你在哪里呢</p>
-                        </div>
-                    </div>
+            <!-- 文字展示区域 -->
+            <div class="quote-section">
+                <div class="quote-main">
+                    <h3>时间是唯一的解药</h3>
+                    <p>过去 · 现在 · 以后</p>
                 </div>
             </div>
         </section>
     </main>
 </body>
-</html> 
+</html>

@@ -1,37 +1,85 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>时光信箱</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>公开信箱 - Time Capsule</title>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/mailbox.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="top-nav">
+        <a href="index.html" class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <span>Time Capsule</span>
+        </a>
         <div class="nav-links">
-            <a href="write.html">写信</a>
-            <a href="capsule.html">时间胶囊</a>
-            <a href="mailbox.html">时光信箱</a>
-            <a href="about.html">关于</a>
+            <a href="index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                首页
+            </a>
+            <a href="write.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                写信
+            </a>
+            <a href="mailbox.html" class="active">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect><line x1="12" y1="12" x2="12" y2="12.01"></line><path d="M3 4l9 6 9-6"></path></svg>
+                公开信箱
+            </a>
+            <a href="capsule.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                胶囊
+            </a>
+            <a href="about.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                关于
+            </a>
         </div>
     </nav>
-    <main>
-        <section class="mailbox-section">
-            <div class="mailbox-container">
-                <h2 class="page-title">时光信箱</h2>
-                <div class="mailbox-tabs">
-                    <button class="tab-btn active" data-tab="future">来自未来的信</button>
-                    <button class="tab-btn" data-tab="image">定格时空</button>
-                    <button class="tab-btn" data-tab="shqs">三行情书</button>
-                </div>
-                <div id="mailbox-list" class="mailbox-list">
-                    <div class="loading">正在加载信件...</div>
-                </div>
-            </div>
-        </section>
-    </main>
+
+    <div class="subpage-container">
+        <header class="page-header">
+            <h1>公开信箱</h1>
+            <p>在这里，阅读陌生人的故事与期许。</p>
+        </header>
+
+        <div class="mailbox-tabs">
+            <button class="tab-btn active" data-tab="future">给未来的信</button>
+            <button class="tab-btn" data-tab="image">图片信件</button>
+            <button class="tab-btn" data-tab="shqs">三行情书</button>
+        </div>
+
+        <div id="mailbox-list" class="mailbox-list">
+            <!-- Mail items injected by JS -->
+        </div>
+        
+        <div class="loading" style="display: none; text-align: center; color: var(--text-light); margin: 2rem 0;">
+            加载中...
+        </div>
+        <div class="no-more" style="display: none; text-align: center; color: var(--text-light); margin: 2rem 0;">
+            没有更多信件了
+        </div>
+    </div>
+
+    <!-- 弹窗 -->
+    <div id="mailModal" class="modal">
+        <div class="modal-content paper-texture">
+            <span class="close-btn">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Time Capsule. All rights reserved.</p>
+    </footer>
+
+    <script src="js/config.js"></script>
     <script src="js/mailbox.js"></script>
 </body>
 </html>
