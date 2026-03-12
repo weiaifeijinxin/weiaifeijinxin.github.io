@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>时间胶囊 - 寄往未来的信</title>
     <link rel="stylesheet" href="styles/home.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="top-nav">
@@ -18,64 +18,57 @@
     </nav>
 
     <main class="home-container">
-        <!-- 背景高光装饰 -->
-        <div class="bg-glow glow-1"></div>
-        <div class="bg-glow glow-2"></div>
-        
-        <div class="content-center">
-            <!-- App 图标 -->
-            <div class="app-icon-wrapper">
-                <img src="images/timepillicon1024.png" alt="时间胶囊App 图标" class="app-icon">
+        <!-- 信纸主体 -->
+        <div class="letter-paper">
+            <!-- 邮票风格 Logo -->
+            <div class="stamp-container">
+                <img src="images/timepillicon1024.png" alt="时间胶囊" class="app-icon">
             </div>
             
             <h1 class="main-title">时间胶囊</h1>
-            <p class="tagline">寄往未来的信，与时间做个约定</p>
+            <p class="tagline">寄往未来的信</p>
+            
+            <div class="divider">
+                <svg width="120" height="20" viewBox="0 0 120 20">
+                    <path d="M0 10 Q 30 20 60 10 T 120 10" fill="none" class="line-path" stroke="#d4c4b7" stroke-width="1.5" stroke-dasharray="4 4"/>
+                </svg>
+            </div>
 
-            <div class="subtitle">
-                <p>清早上火车站，长街黑暗无行人，卖豆浆的小店冒着热气</p>
-                <p class="highlight">从前车马很慢，书信很远，一生只够爱一个人</p>
+            <!-- 诗意文案 -->
+            <div class="poetry">
+                <p>清早上火车站，长街黑暗无行人</p>
+                <p>卖豆浆的小店冒着热气</p>
+                <p class="highlight">从前车马很慢，书信很远</p>
+                <p class="highlight">一生只够爱一个人</p>
             </div>
             
+            <!-- 操作按钮 -->
             <div class="action-group">
-                <button class="action-btn primary-btn" onclick="window.location.href='write.html'">
-                    <span class="icon">✨</span>
-                    在线写信
-                </button>
-
-                <a href="https://apps.apple.com/cn/app/%E6%97%B6%E9%97%B4%E8%83%B6%E5%9B%8A-%E5%AF%84%E5%BE%80%E6%9C%AA%E6%9D%A5%E7%9A%84%E4%BF%A1/id1358237203" target="_blank" class="action-btn apple-btn">
-                    <svg class="apple-logo" viewBox="0 0 384 512" width="20" height="20" fill="currentColor">
-                        <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
-                    </svg>
-                    <div class="btn-text">
-                        <span class="small-text">Download on the</span>
-                        <span class="large-text">App Store</span>
-                    </div>
+                <a href="write.html" class="action-btn primary-btn">
+                    <span class="icon">✒️</span> 起笔写信
+                </a>
+                
+                <a href="https://apps.apple.com/cn/app/%E6%97%B6%E9%97%B4%E8%83%B6%E5%9B%8A-%E5%AF%84%E5%BE%80%E6%9C%AA%E6%9D%A5%E7%9A%84%E4%BF%A1/id1358237203" target="_blank" class="action-btn app-store-btn">
+                    📥 去 App Store 下载
                 </a>
             </div>
-
-            <div class="development-notice">
-                <span class="pulse-dot"></span>
-                <span>安卓版本正在加速开发中...</span>
-            </div>
+            <div class="status-text">安卓版本正在用心开发中...</div>
         </div>
 
-        <!-- 底部数据统计 -->
-        <div class="stats-container">
-            <div class="stats-wrapper">
-                <div class="stat-item">
-                    <div class="stat-icon">👀</div>
-                    <div class="stat-info">
-                        <span class="stat-number" id="visitCount">0</span>
-                        <span class="stat-label">历史访客</span>
-                    </div>
+        <!-- 极简脚部统计 -->
+        <div class="stats-footer">
+            <div class="stat-item">
+                <span class="stat-icon">🕊️</span>
+                <div>
+                    <div class="stat-number" id="visitCount">0</div>
+                    <div class="stat-label">信使足迹</div>
                 </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <div class="stat-icon">✉️</div>
-                    <div class="stat-info">
-                        <span class="stat-number" id="letterCount">0</span>
-                        <span class="stat-label">信件封存</span>
-                    </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">✉️</span>
+                <div>
+                    <div class="stat-number" id="letterCount">0</div>
+                    <div class="stat-label">信件封存</div>
                 </div>
             </div>
         </div>

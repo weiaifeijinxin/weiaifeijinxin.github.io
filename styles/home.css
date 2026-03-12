@@ -1,362 +1,249 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&family=Noto+Serif+SC:wght@400;500;600&display=swap');
 
 :root {
-    --bg-color: #fbfbfd;
-    --text-primary: #1d1d1f;
-    --text-secondary: #86868b;
-    --primary-color: #0071e3;
-    --primary-color-hover: #0077ed;
-    --glass-bg: rgba(255, 255, 255, 0.72);
+    --bg-color: #faf5f0;           /* 温柔米胚色 */
+    --paper-color: #fffaf4;        /* 信纸白 */
+    --text-main: #4a4036;          /* 深灰棕色文字 */
+    --text-muted: #8c7b6c;         /* 浅色辅助文字 */
+    --accent-color: #d97757;       /* 温暖的砖红/火漆印色 */
+    --accent-hover: #c26547;
+    --line-color: #eaddd3;         /* 分割线颜色 */
 }
 
 body {
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Arial", "Noto Serif SC", sans-serif;
+    /* 淡淡的网格信纸质感 */
+    background-image: radial-gradient(#e6d5c3 1px, transparent 1px);
+    background-size: 24px 24px;
+    font-family: "Noto Serif SC", serif;
+    color: var(--text-main);
     min-height: 100vh;
-    color: var(--text-primary);
-    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
-/* 导航栏毛玻璃效果 */
+/* 顶部导航 - 极简排版 */
 .top-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
-    padding: 18px 0;
+    padding: 30px 0 15px;
     text-align: center;
-    background-color: var(--glass-bg);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    z-index: 100;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+.nav-links {
+    display: inline-flex;
+    gap: 30px;
+    border-bottom: 1px solid var(--line-color);
+    padding-bottom: 12px;
 }
 
 .nav-links a {
-    color: var(--text-primary);
+    color: var(--text-muted);
     text-decoration: none;
-    margin: 0 24px;
-    padding: 8px 16px;
     font-size: 15px;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    letter-spacing: 2px;
     transition: all 0.3s ease;
-    border-radius: 20px;
 }
 
 .nav-links a:hover {
-    color: var(--primary-color);
+    color: var(--accent-color);
 }
 
-/* 页面主体 */
+/* 主体容器居中 */
 .home-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 120px 20px 100px; /* Leave space for fixed nav and bottom stats */
-    position: relative;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 220px);
+    padding: 20px;
 }
 
-/* 背景高光网格渐变 */
-.bg-glow {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    z-index: -1;
-    opacity: 0.5;
-}
-
-.glow-1 {
-    width: 40vw;
-    height: 40vw;
-    background: radial-gradient(circle, #fce4ec 0%, rgba(255,255,255,0) 70%);
-    top: -10%;
-    left: -10%;
-}
-
-.glow-2 {
-    width: 35vw;
-    height: 35vw;
-    background: radial-gradient(circle, #e3f2fd 0%, rgba(255,255,255,0) 70%);
-    bottom: 20%;
-    right: -5%;
-}
-
-/* 中心内容 */
-.content-center {
+/* 信纸卡片 */
+.letter-paper {
+    background-color: var(--paper-color);
     width: 100%;
-    max-width: 800px;
+    max-width: 540px;
+    padding: 40px 30px 50px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    /* 纸张厚度和阴影 */
+    box-shadow: 0 10px 40px rgba(138, 115, 95, 0.1), 
+                0 1px 3px rgba(138, 115, 95, 0.05);
+    position: relative;
     text-align: center;
-    z-index: 1;
-    animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    border: 1px solid #f2e9e1;
 }
 
-/* App 图标 */
-.app-icon-wrapper {
-    margin-bottom: 24px;
+/* 邮票风格 Icon */
+.stamp-container {
+    display: inline-block;
+    padding: 6px;
+    background: #fff;
+    border: 1px dashed #d1c1b3;
+    margin-bottom: 25px;
+    transform: rotate(3deg);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.stamp-container:hover {
+    transform: rotate(-2deg) scale(1.05);
 }
 
 .app-icon {
-    width: 110px;
-    height: 110px;
-    border-radius: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.3);
-    object-fit: contain;
-    transition: transform 0.3s ease;
+    width: 70px;
+    height: 70px;
+    display: block;
+    object-fit: cover;
 }
 
-.app-icon:hover {
-    transform: scale(1.05);
-}
-
-/* 主标题 */
+/* 标题与文字排版 */
 .main-title {
-    font-size: 64px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-size: 38px;
+    font-family: 'Zhi Mang Xing', cursive; /* 引入手写行书 */
+    font-weight: normal;
     margin: 0;
-    background: linear-gradient(135deg, #1d1d1f 0%, #434345 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text-main);
+    letter-spacing: 4px;
 }
 
 .tagline {
-    font-size: 24px;
-    font-weight: 400;
-    color: var(--text-secondary);
-    margin-top: 12px;
+    font-size: 14px;
+    letter-spacing: 8px;
+    color: var(--text-muted);
+    margin: 8px 0 20px 8px;
+}
+
+.divider {
+    margin: 20px 0 35px;
+    opacity: 0.7;
+}
+
+.poetry {
     margin-bottom: 40px;
-    font-family: "Noto Serif SC", serif;
+    line-height: 2.4;
+    font-size: 15px;
+    color: #6a5d51;
 }
 
-/* 副标题 (诗句) */
-.subtitle {
-    margin: 0 auto 50px;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255,255,255,0.8);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.04);
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    max-width: 500px;
+.poetry p {
+    margin: 4px 0;
 }
 
-.subtitle p {
-    margin: 8px 0;
-    font-size: 16px;
-    color: var(--text-secondary);
-    line-height: 1.8;
+.poetry .highlight {
+    color: var(--accent-color);
+    font-size: 17px;
 }
 
-.subtitle .highlight {
-    font-family: "Noto Serif SC", serif;
-    font-size: 18px;
-    color: #333;
-    font-weight: 500;
-    margin-top: 20px;
-}
-
-/* 按钮组 */
+/* 操作按钮 */
 .action-group {
     display: flex;
-    gap: 20px;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
+    gap: 16px;
 }
 
 .action-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 14px 28px;
+    padding: 12px 0;
     border-radius: 30px;
-    font-size: 17px;
-    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 1.5px;
     text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    width: 220px;
+    box-sizing: border-box;
 }
 
+/* 写入按钮 (模仿印章颜色) */
 .primary-btn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
+    background-color: var(--accent-color);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(217, 119, 87, 0.25);
 }
 
 .primary-btn:hover {
-    background-color: var(--primary-color-hover);
+    background-color: var(--accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 6px 20px rgba(217, 119, 87, 0.35);
 }
 
-.apple-btn {
-    background-color: #1d1d1f;
-    color: white;
-    border: none;
-    padding: 10px 24px;
+.primary-btn .icon {
+    margin-right: 8px;
 }
 
-.apple-btn:hover {
-    background-color: #000;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+/* App Store 下载按钮 */
+.app-store-btn {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--line-color);
 }
 
-.apple-btn .icon {
-    font-size: 24px;
+.app-store-btn:hover {
+    background-color: var(--line-color);
+    color: var(--text-main);
 }
 
-.apple-btn .btn-text {
+.status-text {
+    margin-top: 24px;
+    font-size: 12px;
+    color: #baa898;
+    letter-spacing: 1px;
+}
+
+/* 底部数据统计 */
+.stats-footer {
+    margin-top: 40px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-}
-
-.apple-btn .small-text {
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 1;
-    margin-bottom: 2px;
-}
-
-.apple-btn .large-text {
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1;
-}
-
-/* 安卓开发提示 */
-.development-notice {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0,0,0,0.03);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    color: var(--text-secondary);
-}
-
-.pulse-dot {
-    width: 6px;
-    height: 6px;
-    background-color: #34c759;
-    border-radius: 50%;
-    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.4);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(52, 199, 89, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); }
-}
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* 统计信息部分 */
-.stats-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: var(--glass-bg);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-top: 1px solid rgba(0,0,0,0.05);
-    padding: 16px 0;
-    z-index: 100;
-}
-
-.stats-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 60px;
+    gap: 80px;
+    opacity: 0.8;
 }
 
 .stat-item {
     display: flex;
     align-items: center;
     gap: 12px;
+    color: var(--text-muted);
 }
 
 .stat-icon {
-    font-size: 26px;
-}
-
-.stat-info {
-    display: flex;
-    flex-direction: column;
+    font-size: 24px;
+    opacity: 0.7;
 }
 
 .stat-number {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text-primary);
-    font-family: "SF Pro Display", -apple-system, sans-serif;
-    letter-spacing: 0.5px;
+    font-size: 20px;
+    font-family: -apple-system, sans-serif;
+    color: var(--text-main);
+    font-weight: bold;
 }
 
 .stat-label {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin-top: 2px;
-}
-
-.stat-divider {
-    width: 1px;
-    height: 36px;
-    background-color: rgba(0,0,0,0.1);
+    font-size: 12px;
+    letter-spacing: 1px;
 }
 
 /* 移动端适配 */
-@media (max-width: 768px) {
-    .main-title {
-        font-size: 42px;
-    }
-    
-    .tagline {
-        font-size: 18px;
-    }
-    
-    .nav-links a {
-        margin: 0 10px;
-        padding: 6px 12px;
-        font-size: 14px;
+@media (max-width: 600px) {
+    /* 手机端去掉纸张边框阴影，显得更平实自然 */
+    .letter-paper {
+        padding: 20px 10px 40px;
+        box-shadow: none;
+        background: transparent;
+        border: none;
     }
 
-    .action-group {
-        flex-direction: column;
-        width: 100%;
-        max-width: 280px;
-        margin: 0 auto 30px;
+    body {
+        background-color: var(--paper-color);
+        background-image: none;
     }
 
-    .action-btn {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .stats-wrapper {
-        gap: 30px;
-    }
-    
-    .stat-number {
-        font-size: 18px;
+    .stats-footer {
+        gap: 40px;
+        padding-bottom: 30px;
     }
 }
