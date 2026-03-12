@@ -156,3 +156,41 @@ document.addEventListener('DOMContentLoaded', function() {
         stampImg.src = `images/youpiao/youpiao${randomIndex}.png`;
     }
 }); 
+// 设置随机邮票装饰
+document.addEventListener("DOMContentLoaded", () => {
+    const stamp1 = document.getElementById('decoStamp1');
+    const stamp2 = document.getElementById('decoStamp2');
+    
+    function getRandomStampPath() {
+        return 'images/youpiao/youpiao' + Math.floor(Math.random() * 14) + '.png';
+    }
+    
+    if(stamp1) stamp1.src = getRandomStampPath();
+    if(stamp2) stamp2.src = getRandomStampPath();
+});
+
+// App Store 下载按钮在微信中的防拦截处理
+document.addEventListener("DOMContentLoaded", () => {
+    const appStoreBtns = document.querySelectorAll('.app-store-btn');
+    appStoreBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const ua = navigator.userAgent.toLowerCase();
+            const isWeixin = ua.indexOf('micromessenger') !== -1;
+            
+            // 如果是微信则弹出提示遮罩
+            if (isWeixin) {
+                e.preventDefault();
+                let mask = document.getElementById('wxOauthMask');
+                if (!mask) {
+                    mask = document.createElement('div');
+                    mask.id = 'wxOauthMask';
+                    mask.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; flex-direction:column; align-items:flex-end; padding:20px; box-sizing:border-box; color:#fff; font-size:18px; font-family:sans-serif; text-align:right;';
+                    mask.innerHTML = '<div style="margin-top:20px; margin-right:20px; font-weight:bold; line-height:1.8;"><span style="font-size:36px;">↗</span><br>请点击右上角<br>选择"在默认浏览器中打开"<br>即可前往App Store下载页面</div>';
+                    mask.onclick = () => mask.style.display = 'none';
+                    document.body.appendChild(mask);
+                }
+                mask.style.display = 'flex';
+            }
+        });
+    });
+});

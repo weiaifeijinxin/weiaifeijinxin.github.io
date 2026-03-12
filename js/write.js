@@ -271,3 +271,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+// 页面加载完毕设置邮票
+document.addEventListener("DOMContentLoaded", () => {
+    const stamp = document.getElementById('decoStampWrite');
+    if (stamp) {
+        stamp.src = 'images/youpiao/youpiao' + Math.floor(Math.random() * 14) + '.png';
+    }
+});

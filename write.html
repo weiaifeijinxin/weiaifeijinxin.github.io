@@ -22,7 +22,10 @@
     </nav>
 
     <main class="subpage-main">
-        <div class="letter-container">
+        <div class="letter-container" style="position: relative;">
+            <!-- 右上角复古邮票 -->
+            <img id="decoStampWrite" src="" alt="邮票" style="position: absolute; top: -15px; right: 20px; width: 55px; transform: rotate(8deg); opacity: 0.85; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15)); z-index: 10; pointer-events: none;">
+            
             <div class="letter-form">
                 <div class="letter-header">
                     <div class="date">写信日期：<span id="currentDate"></span></div>

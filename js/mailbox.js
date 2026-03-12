@@ -284,3 +284,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+// 页面加载完毕设置右侧随机邮票装饰
+document.addEventListener("DOMContentLoaded", () => {
+    const stampM = document.getElementById('decoStampMailbox');
+    if (stampM) {
+        stampM.src = getRandomStampUrl();
+    }
+});
