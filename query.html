@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查信 - 时间胶囊</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/home.css">
+    <link rel="stylesheet" href="styles/query.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="logo-text" onclick="window.location.href='index.html'" style="cursor: pointer;">时间胶囊</div>
+            <div class="nav-links">
+                <a href="write.html">写信</a>
+                <a href="capsule.html">时间胶囊</a>
+                <a href="mailbox.html">时光信箱</a>
+                <a href="query.html" style="color: var(--accent-color); font-weight: bold;">查信</a>
+                <a href="about.html">关于</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="query-container">
+        <div class="search-section">
+            <div class="search-title">查 询 信 件</div>
+            <p class="search-desc">输入收件邮箱，找回属于你的时光信件</p>
+
+            <form class="search-form" id="searchForm">
+                <input type="email" id="emailInput" class="search-input" placeholder="输入收件邮箱地址" required>
+                <button type="submit" id="queryBtn" class="search-btn">查询</button>
+            </form>
+
+            <div class="initial-hint">
+                <p>输入你收信时预留的邮箱，即可查询所有寄给你的信件</p>
+            </div>
+        </div>
+
+        <!-- 加载状态 -->
+        <div class="status-area">
+            <div class="loading-state" id="loadingState">
+                <div class="loading-spinner"></div>
+                <span class="loading-text">正在查询你的信件...</span>
+            </div>
+
+            <!-- 空状态 -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div class="empty-title">暂无信件</div>
+                <div class="empty-desc">该邮箱暂无已送达的信件，请检查邮箱地址是否正确</div>
+            </div>
+
+            <!-- 错误状态 -->
+            <div class="error-state" id="errorState">
+                <div class="error-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                </div>
+                <div class="error-title" id="errorTitle">查询失败</div>
+                <div class="error-desc" id="errorDesc">请稍后重试</div>
+                <button class="retry-btn" id="retryBtn">重新查询</button>
+            </div>
+        </div>
+
+        <!-- 结果区 -->
+        <div class="result-section" id="resultSection">
+            <div class="result-count" id="resultCount"></div>
+            <div class="result-list" id="resultList"></div>
+        </div>
+    </main>
+
+    <script>
+        const API_HEADERS = {
+            'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+            'Content-Type': 'application/json'
+        };
+
+        const form = document.getElementById('searchForm');
+        const emailInput = document.getElementById('emailInput');
+        const queryBtn = document.getElementById('queryBtn');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const errorState = document.getElementById('errorState');
+        const errorTitle = document.getElementById('errorTitle');
+        const errorDesc = document.getElementById('errorDesc');
+        const retryBtn = document.getElementById('retryBtn');
+        const resultSection = document.getElementById('resultSection');
+        const resultCount = document.getElementById('resultCount');
+        const resultList = document.getElementById('resultList');
+
+        let lastEmail = '';
+
+        function showLoading() {
+            loadingState.classList.add('active');
+            emptyState.classList.remove('active');
+            errorState.classList.remove('active');
+            resultSection.classList.remove('active');
+            queryBtn.disabled = true;
+            queryBtn.textContent = '查询中...';
+        }
+
+        function hideLoading() {
+            loadingState.classList.remove('active');
+            queryBtn.disabled = false;
+            queryBtn.textContent = '查询';
+        }
+
+        function showError(title, desc) {
+            hideLoading();
+            errorTitle.textContent = title || '查询失败';
+            errorDesc.textContent = desc || '请稍后重试';
+            errorState.classList.add('active');
+        }
+
+        function showEmpty() {
+            hideLoading();
+            emptyState.classList.add('active');
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '未知日期';
+            const d = new Date(dateStr);
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return y + '/' + m + '/' + day;
+        }
+
+        function getTagText(item) {
+            if (item.xinLetterType === 'shqs') return '三行情书';
+            if (item.xinIsImage === 'YES' || item.image) return '图片信件';
+            return '电子信件';
+        }
+
+        function getFrom(item) {
+            return item.xinUserName || item.xinSendFromEmail || '未知';
+        }
+
+        function getImageUrl(item) {
+            if (item.image && typeof item.image === 'object' && item.image.url) {
+                return item.image.url;
+            }
+            if (item.image && typeof item.image === 'string') {
+                return item.image;
+            }
+            if (item.xinImageUrl) return item.xinImageUrl;
+            return null;
+        }
+
+        function renderResults(jsonData) {
+            hideLoading();
+
+            // 云函数返回 { code: 200, data: [...] }
+            var items = jsonData.data || jsonData.results || (Array.isArray(jsonData) ? jsonData : []);
+
+            if (items.length === 0) {
+                showEmpty();
+                return;
+            }
+
+            resultCount.textContent = '共找到 ' + items.length + ' 封信件';
+            resultList.innerHTML = items.map(function(item) {
+                var content = item.xinContent || '(无内容)';
+                var tag = getTagText(item);
+                var date = formatDate(item.xinSendTime || item.createdAt);
+                var from = getFrom(item);
+                var imgUrl = getImageUrl(item);
+                var imgHtml = imgUrl ? '<img class="card-image" src="' + imgUrl + '" alt="配图" onerror="this.style.display=\'none\'">' : '';
+                return '' +
+                    '<div class="result-card">' +
+                        imgHtml +
+                        '<div class="card-body">' +
+                            '<span class="card-tag">' + tag + '</span>' +
+                            '<div class="card-content">' + content + '</div>' +
+                            '<div class="card-meta">' +
+                                '<span class="card-date">发送日期：' + date + '</span>' +
+                                '<span class="card-from">来自：' + from + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+            }).join('');
+
+            resultSection.classList.add('active');
+        }
+
+        async function queryLetters(email) {
+            showLoading();
+            try {
+                var response = await fetch('https://api.codenow.cn/1/functions/queryLetters', {
+                    method: 'POST',
+                    headers: API_HEADERS,
+                    body: JSON.stringify({ email: email })
+                });
+
+                if (!response.ok) {
+                    throw new Error('服务器返回错误：' + response.status);
+                }
+
+                var result = await response.json();
+                renderResults(result);
+            } catch (err) {
+                if (err instanceof TypeError && err.message.includes('Failed to fetch')) {
+                    showError('网络连接失败', '请检查网络连接后重试');
+                } else {
+                    showError('查询失败', err.message);
+                }
+            }
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email = emailInput.value.trim();
+            if (!email) {
+                showError('请输入邮箱', '请填写收件邮箱地址');
+                return;
+            }
+            lastEmail = email;
+            queryLetters(email);
+        });
+
+        retryBtn.addEventListener('click', function() {
+            if (lastEmail) {
+                queryLetters(lastEmail);
+            }
+        });
+    </script>
+</body>
+</html>
