@@ -34,6 +34,7 @@
 
             <div class="initial-hint">
                 <p>输入你收信时预留的邮箱，即可查询所有寄给你的信件</p>
+                <p class="daily-limit" id="dailyHint">每日限查询 3 次 · 今日剩余 <span id="remainCount">3</span> 次</p>
             </div>
         </div>
 
@@ -71,6 +72,24 @@
         </div>
     </main>
 
+    <!-- 信件详情弹窗 -->
+    <div id="detailModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modalBody">
+                <div id="detailTag" class="detail-tag"></div>
+                <div id="detailFrom" class="detail-from"></div>
+                <div id="detailDate" class="detail-date"></div>
+                <div id="detailImage" class="detail-image-wrap"></div>
+                <div id="detailContent" class="detail-content"></div>
+                <div class="detail-actions">
+                    <button class="detail-btn" onclick="copyContent()">📋 复制内容</button>
+                    <button class="detail-btn" onclick="downloadLetter()">⬇️ 下载文本</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const API_HEADERS = {
             'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
@@ -90,8 +109,43 @@
         const resultSection = document.getElementById('resultSection');
         const resultCount = document.getElementById('resultCount');
         const resultList = document.getElementById('resultList');
+        const remainSpan = document.getElementById('remainCount');
+        const dailyHint = document.getElementById('dailyHint');
 
         let lastEmail = '';
+        let currentItems = [];
+
+        // ===== 每日 3 次限制（localStorage 存） =====
+        function getQueryCount() {
+            var key = 'timecapsule_query_date';
+            var countKey = 'timecapsule_query_count';
+            var today = new Date().toDateString();
+            if (localStorage.getItem(key) !== today) {
+                localStorage.setItem(key, today);
+                localStorage.setItem(countKey, '0');
+                return 0;
+            }
+            return parseInt(localStorage.getItem(countKey) || '0');
+        }
+
+        function incQueryCount() {
+            var count = getQueryCount() + 1;
+            localStorage.setItem('timecapsule_query_count', String(count));
+            updateRemain();
+            return count;
+        }
+
+        function updateRemain() {
+            var used = getQueryCount();
+            var remain = Math.max(0, 3 - used);
+            if (remainSpan) remainSpan.textContent = remain;
+        }
+
+        function canQuery() {
+            return getQueryCount() < 3;
+        }
+
+        updateRemain();
 
         function showLoading() {
             loadingState.classList.add('active');
@@ -120,41 +174,15 @@
             emptyState.classList.add('active');
         }
 
-        function formatDate(dateStr) {
-            if (!dateStr) return '未知日期';
-            const d = new Date(dateStr);
-            const y = d.getFullYear();
-            const m = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            return y + '/' + m + '/' + day;
-        }
-
-        function getTagText(item) {
-            if (item.xinLetterType === 'shqs') return '三行情书';
-            if (item.xinIsImage === 'YES' || item.image) return '图片信件';
-            return '电子信件';
-        }
-
-        function getFrom(item) {
-            return item.xinUserName || item.xinSendFromEmail || '未知';
-        }
-
-        function getImageUrl(item) {
-            if (item.image && typeof item.image === 'object' && item.image.url) {
-                return item.image.url;
-            }
-            if (item.image && typeof item.image === 'string') {
-                return item.image;
-            }
-            if (item.xinImageUrl) return item.xinImageUrl;
-            return null;
+        function escHtml(text) {
+            var d = document.createElement('div');
+            d.textContent = text;
+            return d.innerHTML;
         }
 
         function renderResults(jsonData) {
             hideLoading();
 
-            // Bmob 云函数返回 { result: "{\"code\":200,\"data\":[...]}" }
-            // 需要先解 result 层
             var parsed = jsonData;
             if (parsed.result && typeof parsed.result === 'string') {
                 try { parsed = JSON.parse(parsed.result); } catch(e) {}
@@ -166,32 +194,133 @@
                 return;
             }
 
-            resultCount.textContent = '共找到 ' + items.length + ' 封信件';
-            resultList.innerHTML = items.map(function(item) {
-                var content = item.xinContent || '(无内容)';
-                var tag = getTagText(item);
-                var date = formatDate(item.xinSendTime || item.createdAt);
-                var from = getFrom(item);
-                var imgUrl = getImageUrl(item);
-                var imgHtml = imgUrl ? '<img class="card-image" src="' + imgUrl + '" alt="配图" onerror="this.style.display=\'none\'">' : '';
-                return '' +
-                    '<div class="result-card">' +
-                        imgHtml +
-                        '<div class="card-body">' +
-                            '<span class="card-tag">' + tag + '</span>' +
-                            '<div class="card-content">' + content + '</div>' +
-                            '<div class="card-meta">' +
-                                '<span class="card-date">发送日期：' + date + '</span>' +
-                                '<span class="card-from">来自：' + from + '</span>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>';
+            currentItems = items;
+            resultCount.textContent = '共找到 ' + items.length + ' 封信件，点击卡片查看详情';
+
+            resultList.innerHTML = items.map(function(item, idx) {
+                var content = item.content || '(无内容)';
+                var tag = item.tableLabel || '信件';
+                var date = item.sendTime || '未知';
+                var from = item.from || '未知';
+                var imgUrl = item.imageUrl || null;
+                var imgHtml = imgUrl ? '<img class="card-image" src="' + escHtml(imgUrl) + '" alt="配图" onerror="this.style.display=\'none\'">' : '';
+                var shortContent = content.length > 120 ? content.slice(0, 120) + '...' : content;
+                return '<div class="result-card" onclick="openDetail(' + idx + ')">'
+                    + imgHtml
+                    + '<div class="card-body">'
+                    + '<span class="card-tag">' + escHtml(tag) + '</span>'
+                    + '<div class="card-content">' + escHtml(shortContent) + '</div>'
+                    + '<div class="card-meta">'
+                    + '<span class="card-date">发送日期：' + escHtml(date) + '</span>'
+                    + '<span class="card-from">来自：' + escHtml(from) + '</span>'
+                    + '</div></div></div>';
             }).join('');
 
             resultSection.classList.add('active');
         }
 
+        // ===== 详情弹窗 =====
+        var currentDetailIdx = -1;
+
+        function openDetail(idx) {
+            currentDetailIdx = idx;
+            var item = currentItems[idx];
+            if (!item) return;
+
+            document.getElementById('detailTag').textContent = item.tableLabel || '信件';
+            document.getElementById('detailFrom').textContent = '来自：' + (item.from || '未知');
+            document.getElementById('detailDate').textContent = '发送日期：' + (item.sendTime || '未知');
+
+            var imgHtml = '';
+            if (item.imageUrl) {
+                imgHtml = '<img src="' + escHtml(item.imageUrl) + '" alt="配图" style="max-width:100%;max-height:300px;border-radius:8px;margin:12px 0;">';
+            }
+            document.getElementById('detailImage').innerHTML = imgHtml;
+
+            document.getElementById('detailContent').textContent = item.content || '(无内容)';
+
+            document.getElementById('detailModal').style.display = 'flex';
+            document.getElementById('detailModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+            document.getElementById('detailModal').classList.remove('show');
+        }
+
+        function copyContent() {
+            var item = currentItems[currentDetailIdx];
+            if (!item) return;
+            var text = '来自：' + (item.from || '未知') + '\n'
+                     + '发送日期：' + (item.sendTime || '未知') + '\n'
+                     + '分类：' + (item.tableLabel || '信件') + '\n\n'
+                     + (item.content || '');
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() {
+                    alert('✅ 内容已复制到剪贴板');
+                }).catch(function() {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                alert('✅ 内容已复制到剪贴板');
+            } catch(e) {
+                alert('复制失败，请手动复制');
+            }
+            document.body.removeChild(ta);
+        }
+
+        function downloadLetter() {
+            var item = currentItems[currentDetailIdx];
+            if (!item) return;
+
+            var text = '═══════════════════════════\n'
+                     + '    时间胶囊 - 寄往未来的信\n'
+                     + '═══════════════════════════\n\n'
+                     + '分类：' + (item.tableLabel || '信件') + '\n'
+                     + '发送日期：' + (item.sendTime || '未知') + '\n'
+                     + '来自：' + (item.from || '未知') + '\n\n'
+                     + '───────────────────────────\n\n'
+                     + (item.content || '(无内容)') + '\n\n'
+                     + '───────────────────────────\n'
+                     + '此信由【时间胶囊】App寄出\n'
+                     + 'https://weiaifeijinxin.github.io\n';
+
+            var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = '时间胶囊-信件-' + (item.sendTime || '未知') + '.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 点击弹窗外关闭
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
         async function queryLetters(email) {
+            if (!canQuery()) {
+                showError('今日查询次数已用完', '每天限查询 3 次，明天再来吧');
+                return;
+            }
+
             showLoading();
             try {
                 var response = await fetch('https://api.codenow.cn/1/functions/queryLetters', {
@@ -205,6 +334,7 @@
                 }
 
                 var result = await response.json();
+                incQueryCount();
                 renderResults(result);
             } catch (err) {
                 if (err instanceof TypeError && err.message.includes('Failed to fetch')) {
