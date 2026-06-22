@@ -74,6 +74,7 @@
     <script>
         const API_HEADERS = {
             'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
+            'X-Bmob-REST-API-Key': 'a92fd1416101a7ee4de0ee0850572b91',
             'Content-Type': 'application/json'
         };
 
@@ -152,8 +153,13 @@
         function renderResults(jsonData) {
             hideLoading();
 
-            // 云函数返回 { code: 200, data: [...] }
-            var items = jsonData.data || jsonData.results || (Array.isArray(jsonData) ? jsonData : []);
+            // Bmob 云函数返回 { result: "{\"code\":200,\"data\":[...]}" }
+            // 需要先解 result 层
+            var parsed = jsonData;
+            if (parsed.result && typeof parsed.result === 'string') {
+                try { parsed = JSON.parse(parsed.result); } catch(e) {}
+            }
+            var items = parsed.data || parsed.results || (Array.isArray(parsed) ? parsed : []);
 
             if (items.length === 0) {
                 showEmpty();
