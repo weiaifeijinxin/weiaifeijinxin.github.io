@@ -72,24 +72,6 @@
         </div>
     </main>
 
-    <!-- 信件详情弹窗 -->
-    <div id="detailModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div id="modalBody">
-                <div id="detailTag" class="detail-tag"></div>
-                <div id="detailFrom" class="detail-from"></div>
-                <div id="detailDate" class="detail-date"></div>
-                <div id="detailImage" class="detail-image-wrap"></div>
-                <div id="detailContent" class="detail-content"></div>
-                <div class="detail-actions">
-                    <button class="detail-btn" onclick="copyContent()">📋 复制内容</button>
-                    <button class="detail-btn" onclick="downloadLetter()">⬇️ 下载文本</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         const API_HEADERS = {
             'X-Bmob-Application-Id': '075c9e426a01a48a81aa12305924e532',
@@ -110,7 +92,6 @@
         const resultCount = document.getElementById('resultCount');
         const resultList = document.getElementById('resultList');
         const remainSpan = document.getElementById('remainCount');
-        const dailyHint = document.getElementById('dailyHint');
 
         let lastEmail = '';
         let currentItems = [];
@@ -219,7 +200,7 @@
             resultSection.classList.add('active');
         }
 
-        // ===== 详情弹窗 =====
+        // ===== 全屏详情视图（替换列表） =====
         var currentDetailIdx = -1;
 
         function openDetail(idx) {
@@ -227,25 +208,67 @@
             var item = currentItems[idx];
             if (!item) return;
 
-            document.getElementById('detailTag').textContent = item.tableLabel || '信件';
-            document.getElementById('detailFrom').textContent = '来自：' + (item.from || '未知');
-            document.getElementById('detailDate').textContent = '发送日期：' + (item.sendTime || '未知');
+            // 隐藏列表，显示详情
+            resultList.style.display = 'none';
+            resultCount.style.display = 'none';
 
+            // 创建或显示详情容器
+            var detailView = document.getElementById('detailView');
+            if (!detailView) {
+                detailView = document.createElement('div');
+                detailView.id = 'detailView';
+                detailView.className = 'detail-view';
+                resultSection.appendChild(detailView);
+            }
+            detailView.style.display = 'block';
+            detailView.scrollTop = 0;
+
+            // 构建详情内容
             var imgHtml = '';
             if (item.imageUrl) {
-                imgHtml = '<img src="' + escHtml(item.imageUrl) + '" alt="配图" style="max-width:100%;max-height:300px;border-radius:8px;margin:12px 0;">';
+                imgHtml = '<div class="detail-image-wrap"><img src="' + escHtml(item.imageUrl) + '" alt="配图"></div>';
             }
-            document.getElementById('detailImage').innerHTML = imgHtml;
 
-            document.getElementById('detailContent').textContent = item.content || '(无内容)';
+            detailView.innerHTML = ''
+                + '<div class="detail-header">'
+                + '<button class="detail-back" onclick="closeDetail()">← 返回列表</button>'
+                + '<span class="detail-index">' + (idx + 1) + ' / ' + currentItems.length + '</span>'
+                + '</div>'
+                + '<div class="detail-tag">' + escHtml(item.tableLabel || '信件') + '</div>'
+                + '<div class="detail-from">来自：' + escHtml(item.from || '未知') + '</div>'
+                + '<div class="detail-date">发送日期：' + escHtml(item.sendTime || '未知') + '</div>'
+                + imgHtml
+                + '<div class="detail-body">' + escHtml(item.content || '(无内容)') + '</div>'
+                + '<div class="detail-actions">'
+                + '<button class="detail-btn" onclick="copyContent()">📋 复制全文</button>'
+                + '<button class="detail-btn" onclick="downloadLetter()">⬇️ 下载文本</button>'
+                + '</div>'
+                + '<div class="detail-nav">'
+                + '<button class="nav-btn" onclick="prevLetter()" id="prevBtn">← 上一封</button>'
+                + '<button class="nav-btn" onclick="nextLetter()" id="nextBtn">下一封 →</button>'
+                + '</div>';
 
-            document.getElementById('detailModal').style.display = 'flex';
-            document.getElementById('detailModal').classList.add('show');
+            // 更新上下翻按钮状态
+            document.getElementById('prevBtn').disabled = (idx === 0);
+            document.getElementById('nextBtn').disabled = (idx === currentItems.length - 1);
+
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function closeModal() {
-            document.getElementById('detailModal').style.display = 'none';
-            document.getElementById('detailModal').classList.remove('show');
+        function closeDetail() {
+            var detailView = document.getElementById('detailView');
+            if (detailView) detailView.style.display = 'none';
+            resultList.style.display = '';
+            resultCount.style.display = '';
+        }
+
+        function prevLetter() {
+            if (currentDetailIdx > 0) openDetail(currentDetailIdx - 1);
+        }
+
+        function nextLetter() {
+            if (currentDetailIdx < currentItems.length - 1) openDetail(currentDetailIdx + 1);
         }
 
         function copyContent() {
@@ -258,7 +281,7 @@
 
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(function() {
-                    alert('✅ 内容已复制到剪贴板');
+                    showToast('✅ 已复制到剪贴板');
                 }).catch(function() {
                     fallbackCopy(text);
                 });
@@ -276,9 +299,9 @@
             ta.select();
             try {
                 document.execCommand('copy');
-                alert('✅ 内容已复制到剪贴板');
+                showToast('✅ 已复制到剪贴板');
             } catch(e) {
-                alert('复制失败，请手动复制');
+                showToast('复制失败，请手动选择复制');
             }
             document.body.removeChild(ta);
         }
@@ -310,10 +333,19 @@
             URL.revokeObjectURL(url);
         }
 
-        // 点击弹窗外关闭
-        document.getElementById('detailModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
+        function showToast(msg) {
+            var t = document.getElementById('toast');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'toast';
+                t.className = 'toast';
+                document.body.appendChild(t);
+            }
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(function() { t.classList.remove('show'); }, 2000);
+        }
 
         async function queryLetters(email) {
             if (!canQuery()) {
@@ -352,6 +384,8 @@
                 showError('请输入邮箱', '请填写收件邮箱地址');
                 return;
             }
+            // 关闭详情
+            closeDetail();
             lastEmail = email;
             queryLetters(email);
         });
